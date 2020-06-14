@@ -1,9 +1,15 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "types": ["node", "jest"],
+    "types": [
+      "node",
+      "jest"
+    ],
     "emitDecoratorMetadata": true,
     "target": "es2015"
   },
-  "include": ["**/*.ts"]
+  "include": [
+    "**/*.ts",
+    "../../libs/devices/src/lib/devices.service.ts"
+  ]
 }

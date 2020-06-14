@@ -1,0 +1,7 @@
+version: '2'
+services:
+    access_control_mongo:
+    image: mongo:4.0
+    container_name: access_control_mongo
+    ports:
+      - "27017:27017"

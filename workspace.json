@@ -1,8 +1,65 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "ac-backend": {
+      "root": "apps/ac-backend",
+      "sourceRoot": "apps/ac-backend/src",
+      "projectType": "application",
+      "prefix": "ac-backend",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/ac-backend",
+            "main": "apps/ac-backend/src/main.ts",
+            "tsConfig": "apps/ac-backend/tsconfig.app.json",
+            "assets": ["apps/ac-backend/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/ac-backend/src/environments/environment.ts",
+                  "with": "apps/ac-backend/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "ac-backend:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "apps/ac-backend/tsconfig.app.json",
+              "apps/ac-backend/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/ac-backend/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/ac-backend/jest.config.js",
+            "tsConfig": "apps/ac-backend/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/nest"
   },
   "schematics": {
     "@nrwl/workspace": {
@@ -62,5 +119,6 @@
         "linter": "eslint"
       }
     }
-  }
+  },
+  "defaultProject": "ac-backend"
 }

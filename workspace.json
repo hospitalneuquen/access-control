@@ -1,150 +1,144 @@
 {
-  "version": 1,
-  "projects": {
-    "ac-backend": {
-      "root": "apps/ac-backend",
-      "sourceRoot": "apps/ac-backend/src",
-      "projectType": "application",
-      "prefix": "ac-backend",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@nrwl/node:build",
-          "options": {
-            "outputPath": "dist/apps/ac-backend",
-            "main": "apps/ac-backend/src/main.ts",
-            "tsConfig": "apps/ac-backend/tsconfig.app.json",
-            "assets": ["apps/ac-backend/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/ac-backend/src/environments/environment.ts",
-                  "with": "apps/ac-backend/src/environments/environment.prod.ts"
+    "version": 1,
+    "projects": {
+        "ac-backend": {
+            "root": "apps/ac-backend",
+            "sourceRoot": "apps/ac-backend/src",
+            "projectType": "application",
+            "prefix": "ac-backend",
+            "schematics": {},
+            "architect": {
+                "build": {
+                    "builder": "@nrwl/node:build",
+                    "options": {
+                        "outputPath": "dist/apps/ac-backend",
+                        "main": "apps/ac-backend/src/main.ts",
+                        "tsConfig": "apps/ac-backend/tsconfig.app.json",
+                        "assets": ["apps/ac-backend/src/assets"]
+                    },
+                    "configurations": {
+                        "production": {
+                            "optimization": true,
+                            "extractLicenses": true,
+                            "inspect": false,
+                            "fileReplacements": [
+                                {
+                                    "replace": "apps/ac-backend/src/environments/environment.ts",
+                                    "with": "apps/ac-backend/src/environments/environment.prod.ts"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@nrwl/node:execute",
+                    "options": {
+                        "buildTarget": "ac-backend:build"
+                    }
+                },
+                "lint": {
+                    "builder": "@nrwl/linter:lint",
+                    "options": {
+                        "linter": "eslint",
+                        "tsConfig": ["apps/ac-backend/tsconfig.app.json", "apps/ac-backend/tsconfig.spec.json"],
+                        "exclude": ["**/node_modules/**", "!apps/ac-backend/**/*"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "apps/ac-backend/jest.config.js",
+                        "tsConfig": "apps/ac-backend/tsconfig.spec.json",
+                        "passWithNoTests": true
+                    }
                 }
-              ]
             }
-          }
         },
-        "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "ac-backend:build"
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:lint",
-          "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "apps/ac-backend/tsconfig.app.json",
-              "apps/ac-backend/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/ac-backend/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/ac-backend/jest.config.js",
-            "tsConfig": "apps/ac-backend/tsconfig.spec.json",
-            "passWithNoTests": true
-          }
+        "devices": {
+            "root": "libs/devices",
+            "sourceRoot": "libs/devices/src",
+            "projectType": "library",
+            "schematics": {},
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": ["libs/devices/tsconfig.lib.json", "libs/devices/tsconfig.spec.json"],
+                        "exclude": ["**/node_modules/**", "!libs/devices/**/*"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs/devices/jest.config.js",
+                        "tsConfig": "libs/devices/tsconfig.spec.json",
+                        "passWithNoTests": true
+                    }
+                }
+            }
         }
-      }
     },
-    "devices": {
-      "root": "libs/devices",
-      "sourceRoot": "libs/devices/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/devices/tsconfig.lib.json",
-              "libs/devices/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/devices/**/*"]
-          }
+    "cli": {
+        "defaultCollection": "@nrwl/nest"
+    },
+    "schematics": {
+        "@nrwl/workspace": {
+            "library": {
+                "linter": "eslint"
+            }
         },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/devices/jest.config.js",
-            "tsConfig": "libs/devices/tsconfig.spec.json",
-            "passWithNoTests": true
-          }
+        "@nrwl/cypress": {
+            "cypress-project": {
+                "linter": "eslint"
+            }
+        },
+        "@nrwl/react": {
+            "application": {
+                "linter": "eslint"
+            },
+            "library": {
+                "linter": "eslint"
+            },
+            "storybook-configuration": {
+                "linter": "eslint"
+            }
+        },
+        "@nrwl/next": {
+            "application": {
+                "linter": "eslint"
+            }
+        },
+        "@nrwl/web": {
+            "application": {
+                "linter": "eslint"
+            }
+        },
+        "@nrwl/node": {
+            "application": {
+                "linter": "eslint"
+            },
+            "library": {
+                "linter": "eslint"
+            }
+        },
+        "@nrwl/nx-plugin": {
+            "plugin": {
+                "linter": "eslint"
+            }
+        },
+        "@nrwl/nest": {
+            "application": {
+                "linter": "eslint"
+            }
+        },
+        "@nrwl/express": {
+            "application": {
+                "linter": "eslint"
+            },
+            "library": {
+                "linter": "eslint"
+            }
         }
-      }
-    }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/nest"
-  },
-  "schematics": {
-    "@nrwl/workspace": {
-      "library": {
-        "linter": "eslint"
-      }
     },
-    "@nrwl/cypress": {
-      "cypress-project": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/react": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      },
-      "storybook-configuration": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/next": {
-      "application": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/web": {
-      "application": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/node": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/nx-plugin": {
-      "plugin": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/nest": {
-      "application": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/express": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      }
-    }
-  },
-  "defaultProject": "ac-backend"
+    "defaultProject": "ac-backend"
 }

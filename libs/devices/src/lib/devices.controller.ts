@@ -4,7 +4,7 @@ import { DeviceRequest } from './device.interface';
 
 @Controller('devices')
 export class DeviceController {
-    constructor(private devicesService: DevicesService) { }
+    constructor(private devicesService: DevicesService) {}
 
     @Get('/')
     async getAllDevices(@Res() res) {

@@ -1,10 +1,10 @@
 module.exports = {
-  name: 'devices',
-  preset: '../../jest.config.js',
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.[tj]sx?$': 'ts-jest',
-  },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
-  coverageDirectory: '../../coverage/libs/devices',
+    name: 'devices',
+    preset: '../../jest.config.js',
+    testEnvironment: 'node',
+    transform: {
+        '^.+\\.[tj]sx?$': 'ts-jest'
+    },
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
+    coverageDirectory: '../../coverage/libs/devices'
 };

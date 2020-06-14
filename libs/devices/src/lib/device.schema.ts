@@ -1,5 +1,5 @@
-import * as mongoose from "mongoose";
-import { Device } from "./device.interface";
+import * as mongoose from 'mongoose';
+import { Device } from './device.interface';
 
 export const DeviceSchema = new mongoose.Schema(
     {
@@ -14,7 +14,7 @@ export const DeviceSchema = new mongoose.Schema(
         createdAt: { type: Date, required: false },
         updatedAt: { type: Date, required: false }
     },
-    { collection: "devices" }
+    { collection: 'devices' }
 );
 
 DeviceSchema.pre('save', function (this: Device, next: Function) {

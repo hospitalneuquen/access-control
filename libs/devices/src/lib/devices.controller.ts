@@ -53,9 +53,7 @@ export class DeviceController {
 
     @Delete('/:id')
     async delete(@Res() res, @Param('id') deviceID: string) {
-        const device = await this.devicesService.delete(
-            deviceID
-        );
+        const device = await this.devicesService.delete(deviceID);
         if (!device) {
             throw new NotFoundException('device not found');
         }

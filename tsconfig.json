@@ -16,7 +16,8 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@access-control/devices": ["libs/devices/src/index.ts"]
+            "@access-control/devices": ["libs/devices/src/index.ts"],
+            "@access-control/devices-adapter/hikvision": ["libs/devices-adapter/hikvision/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

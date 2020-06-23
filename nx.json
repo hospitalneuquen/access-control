@@ -24,6 +24,9 @@
         },
         "devices": {
             "tags": []
+        },
+        "devices-adapter-hikvision": {
+            "tags": []
         }
     }
 }

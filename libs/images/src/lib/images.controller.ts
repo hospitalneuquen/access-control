@@ -1,4 +1,4 @@
-import { Post, Get, Param, Res, Controller, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Post, Get, Param, Res, Controller, UseInterceptors, UploadedFiles, NotFoundException } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
 
@@ -35,7 +35,7 @@ export class ImagesController {
         const file = await this.filesService.findInfo(id);
         const filestream = await this.filesService.readStream(id);
         if (!filestream) {
-            throw new HttpException('An error occurred while retrieving file', HttpStatus.EXPECTATION_FAILED);
+            throw new NotFoundException('images not found');
         }
         res.header('Content-Type', file.contentType);
         return filestream.pipe(res);

@@ -5,6 +5,7 @@ export interface AgenteDTO extends Document {
     genero: String;
     documento: String;
     active: Boolean;
+    foto: String;
 }
 
 export interface Agente extends Document, AgenteDTO {

@@ -8,6 +8,7 @@ export const AgenteSchema = new mongoose.Schema(
         genero: String,
         documento: String,
         active: Boolean,
+        foto: String,
 
         identificadores: [String],
         devices: [mongoose.SchemaTypes.ObjectId],

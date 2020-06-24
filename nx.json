@@ -30,6 +30,9 @@
         },
         "agentes": {
             "tags": []
+        },
+        "images": {
+            "tags": []
         }
     }
 }

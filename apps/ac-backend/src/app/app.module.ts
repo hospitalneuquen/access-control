@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { DevicesModule } from '@access-control/devices';
 import { AgentesModule } from '@access-control/agentes';
+import { ImagesModule } from '@access-control/images';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -18,7 +19,8 @@ import { schemaDefaults } from './util/mongoose-default';
             }
         }),
         DevicesModule,
-        AgentesModule
+        AgentesModule,
+        ImagesModule
     ],
     controllers: [AppController],
     providers: [AppService]

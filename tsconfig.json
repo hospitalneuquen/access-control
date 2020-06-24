@@ -18,7 +18,8 @@
         "paths": {
             "@access-control/devices": ["libs/devices/src/index.ts"],
             "@access-control/devices-adapter/hikvision": ["libs/devices-adapter/hikvision/src/index.ts"],
-            "@access-control/agentes": ["libs/agentes/src/index.ts"]
+            "@access-control/agentes": ["libs/agentes/src/index.ts"],
+            "@access-control/images": ["libs/images/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

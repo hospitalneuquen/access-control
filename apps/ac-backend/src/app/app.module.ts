@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DevicesModule } from '@access-control/devices';
 import { AgentesModule } from '@access-control/agentes';
 import { ImagesModule } from '@access-control/images';
+import { DevicesSyncModule } from '@access-control/devices-sync';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -24,7 +25,8 @@ import { schemaDefaults } from './util/mongoose-default';
         }),
         DevicesModule,
         AgentesModule,
-        ImagesModule
+        ImagesModule,
+        DevicesSyncModule
     ],
     controllers: [AppController],
     providers: [AppService]

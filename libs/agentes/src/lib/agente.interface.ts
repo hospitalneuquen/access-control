@@ -1,12 +1,13 @@
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
-export interface AgenteDTO extends Document {
+export interface AgenteDTO {
     nombre: string;
     fechaNacimiento: Date;
     genero: string;
     documento: string;
     active: boolean;
     foto: string;
+    devices: [Types.ObjectId];
 }
 
 export interface Agente extends Document {
@@ -16,6 +17,7 @@ export interface Agente extends Document {
     documento: string;
     active: Boolean;
     foto: string;
+    devices: [Types.ObjectId];
     createdAt: Date;
     updatedAt?: Date;
 }

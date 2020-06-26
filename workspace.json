@@ -149,6 +149,29 @@
                     }
                 }
             }
+        },
+        "devices-sync": {
+            "root": "libs/devices-sync",
+            "sourceRoot": "libs/devices-sync/src",
+            "projectType": "library",
+            "schematics": {},
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": ["libs/devices-sync/tsconfig.lib.json", "libs/devices-sync/tsconfig.spec.json"],
+                        "exclude": ["**/node_modules/**", "!libs/devices-sync/**/*"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs/devices-sync/jest.config.js",
+                        "tsConfig": "libs/devices-sync/tsconfig.spec.json",
+                        "passWithNoTests": true
+                    }
+                }
+            }
         }
     },
     "cli": {

@@ -5,3 +5,10 @@ services:
         container_name: access_control_mongo
         ports:
             - '27017:27017'
+    redis:
+        image: redis:latest
+        container_name: access_control_redis
+        ports:
+            - '6379:6379'
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes

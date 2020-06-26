@@ -24,7 +24,7 @@ export class AgentesService {
         return newAgente.save();
     }
 
-    async update(agenteID, agente: AgenteDTO): Promise<Agente> {
+    async update(agenteID, agente: Partial<AgenteDTO>): Promise<Agente> {
         const updatedAgente = await this.findById(agenteID);
         if (updatedAgente) {
             updatedAgente.set(agente);

@@ -7,8 +7,9 @@ import { Device, DeviceRequest } from './device.interface';
 export class DevicesService {
     constructor(@InjectModel('Device') private readonly deviceModel: Model<Device>) {}
 
-    async getAll(): Promise<Device[]> {
-        const devices = await this.deviceModel.find().exec();
+    async getAll(params = {}, project = null): Promise<Device[]> {
+        project = project || { host: 0, port: 0, user: 0, password: 0, createdAt: 0, updatedAt: 0 };
+        const devices = await this.deviceModel.find(params, project).exec();
         return devices;
     }
 

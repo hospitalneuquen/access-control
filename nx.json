@@ -33,6 +33,9 @@
         },
         "images": {
             "tags": []
+        },
+        "devices-sync": {
+            "tags": []
         }
     }
 }

@@ -5,9 +5,16 @@ import { DevicesService } from './devices.service';
 import { DeviceSchema } from './device.schema';
 import { DeviceController } from './devices.controller';
 
+import { AgenteSchema, AgentesService } from '@access-control/agentes';
+
 @Module({
-    imports: [MongooseModule.forFeature([{ name: 'Device', schema: DeviceSchema }])],
+    imports: [
+        MongooseModule.forFeature([
+            { name: 'Device', schema: DeviceSchema },
+            { name: 'Agente', schema: AgenteSchema }
+        ])
+    ],
     controllers: [DeviceController],
-    providers: [DevicesService]
+    providers: [DevicesService, AgentesService]
 })
-export class DevicesModule {}
+export class DevicesModule { }

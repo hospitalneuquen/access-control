@@ -4,7 +4,7 @@ import { ImagesService } from './images.service';
 
 @Controller('/images')
 export class ImagesController {
-    constructor(private filesService: ImagesService) {}
+    constructor(private filesService: ImagesService) { }
 
     @Post('')
     @UseInterceptors(FilesInterceptor('file'))
@@ -32,12 +32,16 @@ export class ImagesController {
 
     @Get(':id')
     async getFile(@Param('id') id: string, @Res() res) {
+        if (id.endsWith('.jpeg')) {
+            id = id.substr(0, id.length - 5);
+        }
         const file = await this.filesService.findInfo(id);
         const filestream = await this.filesService.readStream(id);
         if (!filestream) {
             throw new NotFoundException('images not found');
         }
-        res.header('Content-Type', file.contentType);
+        res.header('content-type', file.contentType);
+        res.header('content-length', file.length);
         return filestream.pipe(res);
     }
 }

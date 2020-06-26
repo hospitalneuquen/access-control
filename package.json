@@ -28,6 +28,7 @@
     "private": true,
     "dependencies": {
         "@nestjs/common": "^6.8.3",
+        "@nestjs/config": "^0.5.0",
         "@nestjs/core": "^6.8.3",
         "@nestjs/mongoose": "^7.0.1",
         "@nestjs/platform-express": "^6.8.3",

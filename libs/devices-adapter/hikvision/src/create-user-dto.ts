@@ -4,6 +4,12 @@ export interface UserDTO {
     gender?: 'male' | 'female' | 'unknown';
 }
 
+export interface PhotoDTO {
+    id: string;
+    name: string;
+    url: string;
+}
+
 export function createDTO(user: UserDTO) {
     const newPersona = {
         UserInfo: {
@@ -37,4 +43,5 @@ export function createDTO(user: UserDTO) {
             numOfFace: 0
         }
     };
+    return newPersona;
 }

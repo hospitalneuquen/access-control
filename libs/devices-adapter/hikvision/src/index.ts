@@ -1,6 +1,6 @@
 import * as DigestFetch from 'digest-fetch';
 import * as querystring from 'querystring';
-import { UserDTO, createDTO } from './create-user-dto';
+import { UserDTO, createDTO, PhotoDTO } from './create-user-dto';
 
 export interface HikVisionOptions {
     host: string;
@@ -30,9 +30,10 @@ export class HikVisionDevice {
             .then((respuesta) => JSON.parse(respuesta));
     }
 
-    private async post(url: string, body: any = {}) {
+    private async post(url: string, body: any = {}, params: { [key: string]: any } = {}) {
         const qs = querystring.stringify({
-            format: 'json'
+            format: 'json',
+            ...params
         });
         return this.client
             .fetch(`${this.url}${url}?${qs}`, {
@@ -43,9 +44,10 @@ export class HikVisionDevice {
             .then((respuesta) => JSON.parse(respuesta));
     }
 
-    private async put(url: string, body: any = {}) {
+    private async put(url: string, body: any = {}, params: { [key: string]: any } = {}) {
         const qs = querystring.stringify({
-            format: 'json'
+            format: 'json',
+            ...params
         });
         return this.client
             .fetch(`${this.url}${url}?${qs}`, {
@@ -72,4 +74,48 @@ export class HikVisionDevice {
         const response = await this.put('/ISAPI/AccessControl/UserInfo/Delete', bodyDelete);
         return response;
     }
+
+    public async listUser({ limit, skip }: { limit: number, skip: number }) {
+        const time = '' + Date.now();
+        const body = { UserInfoSearchCond: { "searchID": time, searchResultPosition: skip, maxResults: limit } };
+        const response = await this.post('/ISAPI/AccessControl/UserInfo/Search', body);
+        return response.UserInfoSearch.UserInfo;
+    }
+
+    public async getPhoto(employeeNo: string) {
+        const data = {
+            "FDID": "1",
+            "faceLibType": "blackFD",
+            "searchResultPosition": 0,
+            "maxResults": 3,
+            "FPID": employeeNo
+        }
+        const { MatchList } = await this.post('/ISAPI/Intelligent/FDLib/FDSearch', data);
+        const user = MatchList[0]
+        return await this.client.fetch(user?.faceURL);
+    }
+
+    public async addPhoto(user: PhotoDTO) {
+        const data = {
+            "faceLibType": "blackFD",
+            "FDID": "1",
+            "FPID": user.id,
+            "name": user.name,
+            "faceURL": user.url
+        }
+        const response = await this.post('/ISAPI/Intelligent/FDLib/FaceDataRecord', data);
+        return response;
+    }
+
+
+    public async deletePhoto(userID: string) {
+        const params = {
+            FDID: '1',
+            faceLibType: 'blackFD'
+        }
+        const imageBodyDelete = { FPID: [{ "value": userID }] };
+        const response = await this.put('/Intelligent/FDLib/FDSearch/Delete', imageBodyDelete, params);
+        return response;
+    }
+
 }

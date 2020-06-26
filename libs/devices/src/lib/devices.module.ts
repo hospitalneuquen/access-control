@@ -17,4 +17,4 @@ import { AgenteSchema, AgentesService } from '@access-control/agentes';
     controllers: [DeviceController],
     providers: [DevicesService, AgentesService]
 })
-export class DevicesModule { }
+export class DevicesModule {}

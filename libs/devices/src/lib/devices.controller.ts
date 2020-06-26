@@ -7,7 +7,12 @@ import { AgentesService } from '@access-control/agentes';
 
 @Controller('devices')
 export class DeviceController {
-    constructor(private devicesService: DevicesService, private agenteService: AgentesService, private configService: ConfigService) { }
+    constructor(
+        private devicesService: DevicesService,
+
+        private agenteService: AgentesService,
+        private configService: ConfigService
+    ) {}
 
     @Post('/test')
     async test(@Res() res, @Body() body: HikVisionOptions) {
@@ -62,7 +67,6 @@ export class DeviceController {
         // return res.status(HttpStatus.OK).json(users);
     }
 
-
     @Post('/:id/sync')
     async syncAgenteOnDevice(@Res() res, @Param('id') deviceID: string, @Body() body: DeviceSyncPost) {
         const device = await this.devicesService.findById(deviceID);
@@ -77,18 +81,18 @@ export class DeviceController {
 
         const r = await deviceClient.addUser({
             id: agente.id,
-            name: agente.nombre,
+            name: agente.nombre
         });
 
         const HOST = this.configService.get('APP_HOST');
         const r2 = await deviceClient.addPhoto({
             id: agente.id,
             name: agente.nombre,
-            url: `${HOST}/api/images/${agente.foto}.jpeg`,
+            url: `${HOST}/api/images/${agente.foto}.jpeg`
         });
 
-        console.log(r)
-        console.log(r2)
+        console.log(r);
+        console.log(r2);
 
         return res.status(HttpStatus.OK).json(true);
     }

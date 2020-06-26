@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface AgenteDTO extends Document {
-    nombre: string,
+    nombre: string;
     fechaNacimiento: Date;
     genero: string;
     documento: string;
@@ -10,7 +10,7 @@ export interface AgenteDTO extends Document {
 }
 
 export interface Agente extends Document {
-    nombre: string,
+    nombre: string;
     fechaNacimiento: Date;
     genero: string;
     documento: string;

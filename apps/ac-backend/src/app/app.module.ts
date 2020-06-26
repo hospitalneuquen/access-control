@@ -13,7 +13,7 @@ import { schemaDefaults } from './util/mongoose-default';
 @Module({
     imports: [
         ConfigModule.forRoot({
-            isGlobal: true,
+            isGlobal: true
         }),
         MongooseModule.forRoot('mongodb://localhost/access-control', {
             useNewUrlParser: true,
@@ -29,4 +29,4 @@ import { schemaDefaults } from './util/mongoose-default';
     controllers: [AppController],
     providers: [AppService]
 })
-export class AppModule { }
+export class AppModule {}

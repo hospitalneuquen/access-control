@@ -75,47 +75,45 @@ export class HikVisionDevice {
         return response;
     }
 
-    public async listUser({ limit, skip }: { limit: number, skip: number }) {
+    public async listUser({ limit, skip }: { limit: number; skip: number }) {
         const time = '' + Date.now();
-        const body = { UserInfoSearchCond: { "searchID": time, searchResultPosition: skip, maxResults: limit } };
+        const body = { UserInfoSearchCond: { searchID: time, searchResultPosition: skip, maxResults: limit } };
         const response = await this.post('/ISAPI/AccessControl/UserInfo/Search', body);
         return response.UserInfoSearch.UserInfo;
     }
 
     public async getPhoto(employeeNo: string) {
         const data = {
-            "FDID": "1",
-            "faceLibType": "blackFD",
-            "searchResultPosition": 0,
-            "maxResults": 3,
-            "FPID": employeeNo
-        }
+            FDID: '1',
+            faceLibType: 'blackFD',
+            searchResultPosition: 0,
+            maxResults: 3,
+            FPID: employeeNo
+        };
         const { MatchList } = await this.post('/ISAPI/Intelligent/FDLib/FDSearch', data);
-        const user = MatchList[0]
+        const user = MatchList[0];
         return await this.client.fetch(user?.faceURL);
     }
 
     public async addPhoto(user: PhotoDTO) {
         const data = {
-            "faceLibType": "blackFD",
-            "FDID": "1",
-            "FPID": user.id,
-            "name": user.name,
-            "faceURL": user.url
-        }
+            faceLibType: 'blackFD',
+            FDID: '1',
+            FPID: user.id,
+            name: user.name,
+            faceURL: user.url
+        };
         const response = await this.post('/ISAPI/Intelligent/FDLib/FaceDataRecord', data);
         return response;
     }
-
 
     public async deletePhoto(userID: string) {
         const params = {
             FDID: '1',
             faceLibType: 'blackFD'
-        }
-        const imageBodyDelete = { FPID: [{ "value": userID }] };
+        };
+        const imageBodyDelete = { FPID: [{ value: userID }] };
         const response = await this.put('/Intelligent/FDLib/FDSearch/Delete', imageBodyDelete, params);
         return response;
     }
-
 }

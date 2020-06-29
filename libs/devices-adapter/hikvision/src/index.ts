@@ -1,6 +1,7 @@
 import * as DigestFetch from 'digest-fetch';
 import * as querystring from 'querystring';
 import { UserDTO, createDTO, PhotoDTO } from './create-user-dto';
+import { format } from 'date-fns';
 
 export interface HikVisionOptions {
     host: string;
@@ -115,5 +116,31 @@ export class HikVisionDevice {
         const imageBodyDelete = { FPID: [{ value: userID }] };
         const response = await this.put('/Intelligent/FDLib/FDSearch/Delete', imageBodyDelete, params);
         return response;
+    }
+
+    public async getEvents(start: Date, end: Date) {
+        const startTime = format(start, "yyyy-MM-dd'T'HH:mm:ssxxx");
+        const endTime = format(end, "yyyy-MM-dd'T'HH:mm:ssxxx");
+        const time = '' + Date.now();
+        const body = {
+            AcsEventCond: {
+                searchID: time,
+                searchResultPosition: 0,
+                maxResults: 500,
+                major: 5,
+                minor: 75,
+                startTime,
+                endTime
+            }
+        };
+        const response = await this.post('/ISAPI/AccessControl/AcsEvent', body);
+        const list = response.AcsEvent.InfoList || [];
+        return list.map((evt) => {
+            return {
+                agenteId: evt.employeeNoString,
+                datetime: evt.time,
+                url: evt.pictureURL
+            };
+        });
     }
 }

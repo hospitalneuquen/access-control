@@ -1,5 +1,17 @@
 import { DevicesService } from './devices.service';
-import { Controller, Get, Res, HttpStatus, Post, Body, NotFoundException, Delete, Param, Patch } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Res,
+    HttpStatus,
+    Post,
+    Body,
+    NotFoundException,
+    Delete,
+    Param,
+    Patch,
+    Query
+} from '@nestjs/common';
 import { DeviceRequest } from './device.interface';
 import { HikVisionDevice, HikVisionOptions } from '@access-control/devices-adapter/hikvision';
 
@@ -44,6 +56,17 @@ export class DeviceController {
         }
         const deviceClient = new HikVisionDevice(device);
         const users = await deviceClient.listUser({ limit: 50, skip: 0 });
+        return res.status(HttpStatus.OK).json(users);
+    }
+
+    @Get('/:id/events')
+    async getEvents(@Res() res, @Param('id') deviceID: string, @Query() query) {
+        const device = await this.devicesService.findById(deviceID);
+        if (!device) {
+            throw new NotFoundException('device not found');
+        }
+        const deviceClient = new HikVisionDevice(device);
+        const users = await deviceClient.getEvents(new Date(query.start), new Date(query.end));
         return res.status(HttpStatus.OK).json(users);
     }
 

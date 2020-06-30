@@ -18,6 +18,7 @@ export interface Agente extends Document {
     active: Boolean;
     foto: string;
     devices: [Types.ObjectId];
+    identificadores: [String];
     createdAt: Date;
     updatedAt?: Date;
 }

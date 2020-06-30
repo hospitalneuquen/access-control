@@ -36,6 +36,9 @@
         },
         "devices-sync": {
             "tags": []
+        },
+        "ac-plugin-sqlserver": {
+            "tags": []
         }
     }
 }

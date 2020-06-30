@@ -20,7 +20,8 @@
             "@access-control/devices-adapter/hikvision": ["libs/devices-adapter/hikvision/src/index.ts"],
             "@access-control/agentes": ["libs/agentes/src/index.ts"],
             "@access-control/images": ["libs/images/src/index.ts"],
-            "@access-control/devices-sync": ["libs/devices-sync/src/index.ts"]
+            "@access-control/devices-sync": ["libs/devices-sync/src/index.ts"],
+            "@access-control/ac-plugin-sqlserver": ["libs/ac-plugin-sqlserver/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

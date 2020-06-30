@@ -40,6 +40,7 @@
         "digest-fetch": "^1.1.1",
         "mongo-gridfs": "^1.1.0",
         "mongoose": "^5.9.18",
+        "mssql": "^6.2.0",
         "multer-gridfs-storage": "^4.2.0",
         "node-fetch": "^2.6.0",
         "reflect-metadata": "^0.1.13"

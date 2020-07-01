@@ -92,7 +92,7 @@ Visit [Nx Cloud](https://nx.app/) to learn more.
 # SQL Stuff
 
 ```
-docker run --name sqlserver --rm  -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -e 'MSSQL_PID=Express' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-latest-ubuntu 
+docker run --name sqlserver --rm  -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -e 'MSSQL_PID=Express' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-latest-ubuntu
 
 docker exec -it sqlserver  /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'yourStrong(!)Password'
 

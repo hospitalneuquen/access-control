@@ -19,7 +19,7 @@ export class DeviceEventsTasks {
         private devicesService: DevicesService,
         @InjectModel('DeviceEvents') private readonly deviceEventsModel: Model<DeviceEvents>,
         private configService: ConfigService
-    ) { }
+    ) {}
 
     /**
      * [TODO] Esto debería ejecutar un job por reloj
@@ -55,8 +55,8 @@ export class DeviceEventsTasks {
             port: parseInt(this.configService.get('SQLSERVER_PORT') || '1434', 10),
             user: this.configService.get('SQLSERVER_USER'),
             password: this.configService.get('SQLSERVER_PASSWORD'),
-            database: this.configService.get('SQLSERVER_DATABASE'),
-        }
+            database: this.configService.get('SQLSERVER_DATABASE')
+        };
         return new SQLServerExport(config);
     }
 
@@ -79,7 +79,7 @@ export class DeviceEventsTasks {
             this.logger.error(`agente ${item.agenteId} no encontrado`);
             return;
         }
-        const identificador = agente.identificadores.find(ident => ident.startsWith('rrhh-legacy'));
+        const identificador = agente.identificadores.find((ident) => ident.startsWith('rrhh-legacy'));
         const id = parseInt(identificador.substring(12), 10);
 
         const sqlExport = this.getSQLServer();
@@ -88,12 +88,10 @@ export class DeviceEventsTasks {
             idAgente: id,
             fecha: new Date(item.datetime),
             esEntrada: entradaTag,
-            reloj: 32,
-        }
+            reloj: 32
+        };
 
         await sqlExport.insert(personalTable, dto);
-
-
     }
 
     async createEvent(device: Device, item: DeviceEventDTO) {

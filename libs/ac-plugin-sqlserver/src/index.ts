@@ -3,7 +3,7 @@ import * as sql from 'mssql';
 export class SQLServerExport {
     private pool: any;
 
-    constructor(private config: SQLServerConfig) { }
+    constructor(private config: SQLServerConfig) {}
 
     private async connect() {
         return sql.connect(this.config);

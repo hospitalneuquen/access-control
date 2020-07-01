@@ -9,6 +9,7 @@ export interface Device extends Document {
     password: string;
     active: boolean;
     tags: string[];
+    lastSync?: Date;
     createdAt: Date;
     updatedAt?: Date;
 }
@@ -34,6 +35,7 @@ export interface DeviceResponse {
     user: string;
     password: string;
     tags: string[];
+    lastSync?: Date;
     createdAt?: Date;
     updatedAt?: Date;
 }

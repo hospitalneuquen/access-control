@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Agente, AgenteDTO } from './agente.interface';
+import { AGENTE_MODEL_TOKEN } from './agente.schema';
 
 @Injectable()
 export class AgentesService {
-    constructor(@InjectModel('Agente') private readonly agenteModel: Model<Agente>) {}
+    constructor(@InjectModel(AGENTE_MODEL_TOKEN) private readonly agenteModel: Model<Agente>) {}
 
     async getAll(): Promise<Agente[]> {
         const agentes = await this.agenteModel.find().exec();

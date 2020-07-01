@@ -9,6 +9,7 @@ import { DeviceEvents } from './device-events/device-events.interface';
 import { AgentesService } from '@access-control/agentes';
 import { ConfigService } from '@nestjs/config';
 import { SQLServerConfig, SQLServerExport } from '@access-control/ac-plugin-sqlserver';
+import { DEVICE_EVENTS_MODEL_TOKEN } from './device-events/device-events.schema';
 
 @Injectable()
 export class DeviceEventsTasks {
@@ -17,7 +18,7 @@ export class DeviceEventsTasks {
     constructor(
         private agentesService: AgentesService,
         private devicesService: DevicesService,
-        @InjectModel('DeviceEvents') private readonly deviceEventsModel: Model<DeviceEvents>,
+        @InjectModel(DEVICE_EVENTS_MODEL_TOKEN) private readonly deviceEventsModel: Model<DeviceEvents>,
         private configService: ConfigService
     ) {}
 
@@ -29,13 +30,15 @@ export class DeviceEventsTasks {
     async handleCron() {
         this.logger.debug('Called when the current second is 45');
         const now = new Date();
-        const start = subMinutes(startOfMinute(now), 1700);
-        const end = now;
 
         const devicesMatched = await this.devicesService.getAll({ tags: 'fichada' }, {});
         this.logger.debug(`devices found ${devicesMatched.length}`);
 
         for (const device of devicesMatched) {
+            const lastSync = device.lastSync || new Date();
+            const start = lastSync;
+            const end = endOfMinute(subMinutes(now, 1));
+
             const deviceClient = new HikVisionDevice(device);
 
             const eventos: DeviceEventDTO[] = await deviceClient.getEvents(start, end);
@@ -46,6 +49,8 @@ export class DeviceEventsTasks {
                     await this.exportSql(device, evt);
                 }
             }
+
+            await this.devicesService.updateLastSync(device, end);
         }
     }
 

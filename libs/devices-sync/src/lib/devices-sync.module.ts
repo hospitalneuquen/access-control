@@ -13,11 +13,7 @@ import { DeviceEventsTasks } from './device-events.task';
 
 @Module({
     imports: [
-        MongooseModule.forFeature([
-            DEVICE_SCHEMA_MONGOOSE,
-            AGENTE_SCHEMA_MONGOOSE,
-            DEVICE_EVENTS_SCHEMA_MONGOOSE
-        ]),
+        MongooseModule.forFeature([DEVICE_SCHEMA_MONGOOSE, AGENTE_SCHEMA_MONGOOSE, DEVICE_EVENTS_SCHEMA_MONGOOSE]),
         BullModule.registerQueueAsync({
             name: 'devices-sync',
             useFactory: async (config: ConfigService) => ({
@@ -34,5 +30,4 @@ import { DeviceEventsTasks } from './device-events.task';
     providers: [AgentesService, DevicesService, DevicesSyncConsumer, DeviceEventsTasks],
     exports: []
 })
-export class DevicesSyncModule { }
-
+export class DevicesSyncModule {}

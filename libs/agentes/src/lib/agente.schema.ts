@@ -29,6 +29,5 @@ AgenteSchema.pre('save', function (this: Agente, next: Function) {
     next();
 });
 
-
 export const AGENTE_MODEL_TOKEN = 'Agente';
 export const AGENTE_SCHEMA_MONGOOSE = { name: AGENTE_MODEL_TOKEN, schema: AgenteSchema };

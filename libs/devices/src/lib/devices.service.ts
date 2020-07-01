@@ -6,7 +6,7 @@ import { DEVICE_MODEL_TOKEN } from './device.schema';
 
 @Injectable()
 export class DevicesService {
-    constructor(@InjectModel(DEVICE_MODEL_TOKEN) private readonly deviceModel: Model<Device>) { }
+    constructor(@InjectModel(DEVICE_MODEL_TOKEN) private readonly deviceModel: Model<Device>) {}
 
     async getAll(params = {}, project = null): Promise<Device[]> {
         project = project || { host: 0, port: 0, user: 0, password: 0, createdAt: 0, updatedAt: 0 };
@@ -38,5 +38,12 @@ export class DevicesService {
     async delete(deviceID): Promise<Device> {
         const deletedDevice = await this.deviceModel.findByIdAndRemove(deviceID);
         return deletedDevice;
+    }
+
+    async updateLastSync(device: Device, date: Date = null) {
+        if (!date) {
+            date = new Date();
+        }
+        return this.deviceModel.update({ _id: device.id }, { $set: { lastSync: date } });
     }
 }

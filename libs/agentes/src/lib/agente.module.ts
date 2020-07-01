@@ -9,4 +9,4 @@ import { AGENTE_SCHEMA_MONGOOSE } from './agente.schema';
     controllers: [AgenteController],
     providers: [AgentesService]
 })
-export class AgentesModule { }
+export class AgentesModule {}

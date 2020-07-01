@@ -24,7 +24,7 @@ import { schemaDefaults } from './util/mongoose-default';
                     return connection;
                 }
             }),
-            inject: [ConfigService],
+            inject: [ConfigService]
         }),
         DevicesModule,
         AgentesModule,
@@ -34,4 +34,4 @@ import { schemaDefaults } from './util/mongoose-default';
     controllers: [],
     providers: []
 })
-export class AppModule { }
+export class AppModule {}

@@ -11,6 +11,7 @@ export const DeviceSchema = new mongoose.Schema(
         password: String,
         active: Boolean,
         tags: { type: [String], default: [] },
+        lastSync: { type: Date, required: false },
         createdAt: { type: Date, required: false },
         updatedAt: { type: Date, required: false }
     },
@@ -25,7 +26,6 @@ DeviceSchema.pre('save', function (this: Device, next: Function) {
     }
     next();
 });
-
 
 export const DEVICE_MODEL_TOKEN = 'Device';
 export const DEVICE_SCHEMA_MONGOOSE = { name: DEVICE_MODEL_TOKEN, schema: DeviceSchema };

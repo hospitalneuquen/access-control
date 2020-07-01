@@ -7,7 +7,10 @@ import { DEVICE_EVENTS_MODEL_TOKEN } from './device-events/device-events.schema'
 
 @Controller('devices-sync')
 export class DeviceSyncController {
-    constructor(private devicesService: DevicesService, @InjectQueue(DEVICE_EVENTS_MODEL_TOKEN) private devicesQueue: Queue) { }
+    constructor(
+        private devicesService: DevicesService,
+        @InjectQueue(DEVICE_EVENTS_MODEL_TOKEN) private devicesQueue: Queue
+    ) {}
 
     @Post('sync')
     async syncAgenteOnDevice(@Res() res, @Body() body: DeviceSyncPost) {

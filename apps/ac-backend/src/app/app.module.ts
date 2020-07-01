@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { DevicesModule } from '@access-control/devices';
 import { AgentesModule } from '@access-control/agentes';
 import { ImagesModule } from '@access-control/images';
 import { DevicesSyncModule } from '@access-control/devices-sync';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { schemaDefaults } from './util/mongoose-default';
 
 @Module({
@@ -16,19 +14,24 @@ import { schemaDefaults } from './util/mongoose-default';
         ConfigModule.forRoot({
             isGlobal: true
         }),
-        MongooseModule.forRoot('mongodb://localhost/access-control', {
-            useNewUrlParser: true,
-            connectionFactory: (connection) => {
-                connection.plugin(schemaDefaults);
-                return connection;
-            }
+        MongooseModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: async (configService: ConfigService) => ({
+                uri: configService.get<string>('MONGODB_URI'),
+                useNewUrlParser: true,
+                connectionFactory: (connection) => {
+                    connection.plugin(schemaDefaults);
+                    return connection;
+                }
+            }),
+            inject: [ConfigService],
         }),
         DevicesModule,
         AgentesModule,
         ImagesModule,
         DevicesSyncModule
     ],
-    controllers: [AppController],
-    providers: [AppService]
+    controllers: [],
+    providers: []
 })
-export class AppModule {}
+export class AppModule { }

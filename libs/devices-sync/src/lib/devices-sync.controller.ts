@@ -3,10 +3,11 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { DevicesService } from '@access-control/devices';
 import { JobDevicesSyncData } from './devices-sync.consumer';
+import { DEVICE_EVENTS_MODEL_TOKEN } from './device-events/device-events.schema';
 
 @Controller('devices-sync')
 export class DeviceSyncController {
-    constructor(private devicesService: DevicesService, @InjectQueue('devices') private devicesQueue: Queue) {}
+    constructor(private devicesService: DevicesService, @InjectQueue(DEVICE_EVENTS_MODEL_TOKEN) private devicesQueue: Queue) { }
 
     @Post('sync')
     async syncAgenteOnDevice(@Res() res, @Body() body: DeviceSyncPost) {

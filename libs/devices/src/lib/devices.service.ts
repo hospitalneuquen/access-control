@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Device, DeviceRequest } from './device.interface';
+import { DEVICE_MODEL_TOKEN } from './device.schema';
 
 @Injectable()
 export class DevicesService {
-    constructor(@InjectModel('Device') private readonly deviceModel: Model<Device>) {}
+    constructor(@InjectModel(DEVICE_MODEL_TOKEN) private readonly deviceModel: Model<Device>) { }
 
     async getAll(params = {}, project = null): Promise<Device[]> {
         project = project || { host: 0, port: 0, user: 0, password: 0, createdAt: 0, updatedAt: 0 };

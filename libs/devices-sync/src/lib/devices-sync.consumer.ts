@@ -10,7 +10,7 @@ export interface JobDevicesSyncData {
     agenteId: string;
 }
 
-@Processor('devices')
+@Processor('devices-sync')
 export class DevicesSyncConsumer {
     private HOST = '';
 

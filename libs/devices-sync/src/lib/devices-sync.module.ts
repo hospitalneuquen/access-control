@@ -4,22 +4,22 @@ import { BullModule } from '@nestjs/bull';
 import { ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 
-import { DeviceSchema, DevicesService } from '@access-control/devices';
-import { AgenteSchema, AgentesService } from '@access-control/agentes';
+import { DevicesService, DEVICE_SCHEMA_MONGOOSE } from '@access-control/devices';
+import { AgentesService, AGENTE_SCHEMA_MONGOOSE } from '@access-control/agentes';
+import { DEVICE_EVENTS_SCHEMA_MONGOOSE } from './device-events/device-events.schema';
 import { DeviceSyncController } from './devices-sync.controller';
 import { DevicesSyncConsumer } from './devices-sync.consumer';
 import { DeviceEventsTasks } from './device-events.task';
-import { DeviceEventsSchema } from './device-events/device-events.schema';
 
 @Module({
     imports: [
         MongooseModule.forFeature([
-            { name: 'Device', schema: DeviceSchema },
-            { name: 'Agente', schema: AgenteSchema },
-            { name: 'DeviceEvents', schema: DeviceEventsSchema }
+            DEVICE_SCHEMA_MONGOOSE,
+            AGENTE_SCHEMA_MONGOOSE,
+            DEVICE_EVENTS_SCHEMA_MONGOOSE
         ]),
         BullModule.registerQueueAsync({
-            name: 'devices',
+            name: 'devices-sync',
             useFactory: async (config: ConfigService) => ({
                 redis: {
                     host: config.get('REDIS_HOST'),
@@ -34,4 +34,5 @@ import { DeviceEventsSchema } from './device-events/device-events.schema';
     providers: [AgentesService, DevicesService, DevicesSyncConsumer, DeviceEventsTasks],
     exports: []
 })
-export class DevicesSyncModule {}
+export class DevicesSyncModule { }
+

@@ -25,3 +25,7 @@ DeviceSchema.pre('save', function (this: Device, next: Function) {
     }
     next();
 });
+
+
+export const DEVICE_MODEL_TOKEN = 'Device';
+export const DEVICE_SCHEMA_MONGOOSE = { name: DEVICE_MODEL_TOKEN, schema: DeviceSchema };

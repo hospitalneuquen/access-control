@@ -2,39 +2,24 @@ import { Controller, Post, Res, Body } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { DevicesService } from '@access-control/devices';
-import { JobDevicesSyncData } from './devices-sync.consumer';
-import { DEVICE_EVENTS_MODEL_TOKEN } from './device-events/device-events.schema';
+import { JobDevicesAgentSyncData, DEVICE_SYNC_QUEUE, DEVICE_AGENT_SYNC_JOB } from './devices-sync.consumer';
 
 @Controller('devices-sync')
 export class DeviceSyncController {
-    constructor(
-        private devicesService: DevicesService,
-        @InjectQueue(DEVICE_EVENTS_MODEL_TOKEN) private devicesQueue: Queue
-    ) {}
+    constructor(private devicesService: DevicesService, @InjectQueue(DEVICE_SYNC_QUEUE) private devicesQueue: Queue) {}
 
     @Post('sync')
     async syncAgenteOnDevice(@Res() res, @Body() body: DeviceSyncPost) {
         const { agenteId, tags = [], devices = [] } = body;
-        const query: any = {
-            $and: []
-        };
-        if (tags.length) {
-            tags.forEach((tag) => {
-                query.$and.push({ tags: tag });
-            });
-        }
-        if (devices.length) {
-            query._id = { $in: devices };
-        }
 
-        const devicesMatched = await this.devicesService.getAll(query);
+        const devicesMatched = await this.devicesService.search({ tags, deviceIds: devices });
 
         const ps = devicesMatched.map(async (device) => {
-            const jobData: JobDevicesSyncData = {
+            const jobData: JobDevicesAgentSyncData = {
                 agenteId: agenteId,
                 deviceId: device.id
             };
-            const job = await this.devicesQueue.add(jobData);
+            const job = await this.devicesQueue.add(DEVICE_AGENT_SYNC_JOB, jobData);
         });
         await Promise.all(ps);
         res.json(devicesMatched);

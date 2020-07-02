@@ -8,14 +8,14 @@ import { DevicesService, DEVICE_SCHEMA_MONGOOSE } from '@access-control/devices'
 import { AgentesService, AGENTE_SCHEMA_MONGOOSE } from '@access-control/agentes';
 import { DEVICE_EVENTS_SCHEMA_MONGOOSE } from './device-events/device-events.schema';
 import { DeviceSyncController } from './devices-sync.controller';
-import { DevicesSyncConsumer } from './devices-sync.consumer';
+import { DevicesSyncConsumer, DEVICE_SYNC_QUEUE } from './devices-sync.consumer';
 import { DeviceEventsTasks } from './device-events.task';
 
 @Module({
     imports: [
         MongooseModule.forFeature([DEVICE_SCHEMA_MONGOOSE, AGENTE_SCHEMA_MONGOOSE, DEVICE_EVENTS_SCHEMA_MONGOOSE]),
         BullModule.registerQueueAsync({
-            name: 'devices-sync',
+            name: DEVICE_SYNC_QUEUE,
             useFactory: async (config: ConfigService) => ({
                 redis: {
                     host: config.get('REDIS_HOST'),

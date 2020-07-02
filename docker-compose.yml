@@ -5,6 +5,9 @@ services:
         container_name: access_control_mongo
         ports:
             - '27017:27017'
+        volumes:
+            - datastore:/data/db
+
     redis:
         image: redis:latest
         container_name: access_control_redis
@@ -12,3 +15,6 @@ services:
             - '6379:6379'
         environment:
             - ALLOW_EMPTY_PASSWORD=yes
+volumes:
+    datastore:
+        driver: local

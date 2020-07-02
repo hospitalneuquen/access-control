@@ -4,9 +4,31 @@ import { Model, Types } from 'mongoose';
 import { Device, DeviceRequest } from './device.interface';
 import { DEVICE_MODEL_TOKEN } from './device.schema';
 
+export interface DeviceSearchParams {
+    tags?: string[];
+    deviceIds?: string[] | Types.ObjectId[];
+}
+
 @Injectable()
 export class DevicesService {
     constructor(@InjectModel(DEVICE_MODEL_TOKEN) private readonly deviceModel: Model<Device>) {}
+
+    async search(params: DeviceSearchParams = {}, project: any = null) {
+        const { tags, deviceIds } = params;
+
+        const query: any = {
+            $and: []
+        };
+        if (tags && tags.length) {
+            tags.forEach((tag) => {
+                query.$and.push({ tags: tag });
+            });
+        }
+        if (deviceIds && deviceIds.length) {
+            query._id = { $in: deviceIds };
+        }
+        return this.getAll(query, project);
+    }
 
     async getAll(params = {}, project = null): Promise<Device[]> {
         project = project || { host: 0, port: 0, user: 0, password: 0, createdAt: 0, updatedAt: 0 };

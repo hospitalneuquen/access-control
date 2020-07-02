@@ -64,7 +64,7 @@ export class DevicesSyncConsumer {
         if (!agente) {
             return null;
         }
-
+        this.logger.debug(`Sync ${agente.nombre} -> ${device.id}`);
         const r = await deviceClient.addUser({
             id: agente.id,
             name: agente.nombre

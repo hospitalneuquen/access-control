@@ -199,6 +199,79 @@
                     }
                 }
             }
+        },
+        "ac-frontend": {
+            "root": "apps/ac-frontend",
+            "sourceRoot": "apps/ac-frontend/src",
+            "projectType": "application",
+            "schematics": {},
+            "architect": {
+                "build": {
+                    "builder": "@nrwl/web:build",
+                    "options": {
+                        "outputPath": "dist/apps/ac-frontend",
+                        "index": "apps/ac-frontend/src/index.html",
+                        "main": "apps/ac-frontend/src/main.tsx",
+                        "polyfills": "apps/ac-frontend/src/polyfills.ts",
+                        "tsConfig": "apps/ac-frontend/tsconfig.app.json",
+                        "assets": ["apps/ac-frontend/src/favicon.ico", "apps/ac-frontend/src/assets"],
+                        "styles": ["apps/ac-frontend/src/styles.css"],
+                        "scripts": [],
+                        "webpackConfig": "@nrwl/react/plugins/webpack"
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "apps/ac-frontend/src/environments/environment.ts",
+                                    "with": "apps/ac-frontend/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@nrwl/web:dev-server",
+                    "options": {
+                        "buildTarget": "ac-frontend:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "buildTarget": "ac-frontend:build:production"
+                        }
+                    }
+                },
+                "lint": {
+                    "builder": "@nrwl/linter:lint",
+                    "options": {
+                        "linter": "eslint",
+                        "tsConfig": ["apps/ac-frontend/tsconfig.app.json", "apps/ac-frontend/tsconfig.spec.json"],
+                        "exclude": ["**/node_modules/**", "!apps/ac-frontend/**/*"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "apps/ac-frontend/jest.config.js",
+                        "tsConfig": "apps/ac-frontend/tsconfig.spec.json",
+                        "passWithNoTests": true
+                    }
+                }
+            }
         }
     },
     "cli": {
@@ -217,13 +290,19 @@
         },
         "@nrwl/react": {
             "application": {
-                "linter": "eslint"
+                "style": "css",
+                "linter": "eslint",
+                "babel": true
             },
             "library": {
+                "style": "css",
                 "linter": "eslint"
             },
             "storybook-configuration": {
                 "linter": "eslint"
+            },
+            "component": {
+                "style": "css"
             }
         },
         "@nrwl/next": {

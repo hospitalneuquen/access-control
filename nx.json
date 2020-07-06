@@ -39,6 +39,9 @@
         },
         "ac-plugin-sqlserver": {
             "tags": []
+        },
+        "ac-frontend": {
+            "tags": []
         }
     }
 }

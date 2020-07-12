@@ -1,32 +1,25 @@
+import "@babel/polyfill";
 import React from 'react';
-
-import './app.css';
-
+import '@elastic/eui/dist/eui_theme_light.css';
 
 import { Route, Link } from 'react-router-dom';
+import { NavBar } from '../components/nav-bar';
+import { HomePage } from '../pages/home';
+import { DevicesPage } from '../devices/devices.page';
 
 export const App = () => {
     return (
-        <div className="app">
+        <div>
+            <NavBar />
             <Route
                 path="/"
                 exact
-                render={() => (
-                    <div>
-                        This is the generated root route. <Link to="/page-2">Click here for page 2.</Link>
-                    </div>
-                )}
+                render={HomePage}
             />
             <Route
-                path="/page-2"
-                exact
-                render={() => (
-                    <div>
-                        <Link to="/">Click here to go back to root page.</Link>
-                    </div>
-                )}
+                path="/devices"
+                render={() => <DevicesPage></DevicesPage>}
             />
-            {/* END: routes */}
         </div>
     );
 };

@@ -4,9 +4,10 @@ import { EuiPage, EuiPageBody, EuiPageContent, EuiPageContentHeader, EuiPageCont
 export interface PageProps {
     title?: string;
     children: any;
+    action?: any;
 }
 export function Page(props: PageProps) {
-    const { title, children } = props;
+    const { title, action, children } = props;
 
     return (
         <EuiPage>
@@ -19,6 +20,13 @@ export function Page(props: PageProps) {
                                     <h2>{title}</h2>
                                 </EuiTitle>
                             </EuiPageContentHeaderSection>
+                            {
+                                action ? (
+                                    <EuiPageContentHeaderSection>
+                                        {action}
+                                    </EuiPageContentHeaderSection>
+                                ) : null
+                            }
                         </EuiPageContentHeader>
                         : null
                     }

@@ -4,4 +4,5 @@
 export const environment = {
     production: false,
     API: 'http://mongolito.hospitalneuquen.org.ar:3333/'
+    // API: 'http://192.168.1.19:3333/'
 };

@@ -1,14 +1,14 @@
 import { AgentesService } from './agente.service';
-import { Controller, Get, Res, HttpStatus, Post, Body, NotFoundException, Delete, Param, Patch } from '@nestjs/common';
-import { AgenteDTO } from './agente.interface';
+import { Controller, Get, Res, HttpStatus, Post, Body, NotFoundException, Delete, Param, Patch, Query } from '@nestjs/common';
+import { AgenteDTO, AgentesQuerySearch } from './agente.interface';
 
 @Controller('agentes')
 export class AgenteController {
-    constructor(private agentesService: AgentesService) {}
+    constructor(private agentesService: AgentesService) { }
 
     @Get('/')
-    async getAllAgentes(@Res() res) {
-        const agentes = await this.agentesService.getAll();
+    async getAllAgentes(@Res() res, @Query() query: AgentesQuerySearch) {
+        const agentes = await this.agentesService.getAll(query);
         return res.status(HttpStatus.OK).json(agentes);
     }
 

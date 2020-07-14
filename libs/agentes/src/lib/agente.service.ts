@@ -1,15 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Agente, AgenteDTO } from './agente.interface';
+import { Agente, AgenteDTO, AgentesQuerySearch } from './agente.interface';
 import { AGENTE_MODEL_TOKEN } from './agente.schema';
 
 @Injectable()
 export class AgentesService {
-    constructor(@InjectModel(AGENTE_MODEL_TOKEN) private readonly agenteModel: Model<Agente>) {}
+    constructor(@InjectModel(AGENTE_MODEL_TOKEN) private readonly agenteModel: Model<Agente>) { }
 
-    async getAll(): Promise<Agente[]> {
-        const agentes = await this.agenteModel.find().exec();
+    async getAll(query: AgentesQuerySearch = {}): Promise<Agente[]> {
+        const q: any = {};
+        if (query.documento) {
+            q.documento = query.documento;
+        }
+        if (query.nombre) {
+            q.nombre = new RegExp('.*' + query.nombre + '.*', 'i');
+        }
+
+        const command = this.agenteModel.find(q);
+        if (query.limit) {
+            command.limit(query.limit);
+        }
+        if (query.skip) {
+            command.skip(query.skip);
+        }
+
+        const agentes = await this.agenteModel.find(q);
         return agentes;
     }
 

@@ -7,7 +7,7 @@ import { NavBar } from '../components/nav-bar';
 import { HomePage } from '../pages/home';
 import { DevicesPage } from '../devices/devices.page';
 import { AgentesListPage } from '../agentes/agentes-list.page';
-import { AgentesCreatePage } from '../agentes/agentes-create.page';
+import { AgentesCreatePage, AgentesUpdatePage } from '../agentes/agentes-create.page';
 
 export const App = () => {
     return (
@@ -27,6 +27,10 @@ export const App = () => {
                 <Route
                     path="/agentes/create"
                     render={() => <AgentesCreatePage></AgentesCreatePage>}
+                />
+                <Route
+                    path="/agentes/:id"
+                    render={() => <AgentesUpdatePage></AgentesUpdatePage>}
                 />
                 <Route
                     path="/agentes"

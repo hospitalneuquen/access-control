@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 import { DevicesModule } from '@access-control/devices';
 import { AgentesModule } from '@access-control/agentes';
@@ -29,9 +31,13 @@ import { schemaDefaults } from './util/mongoose-default';
         DevicesModule,
         AgentesModule,
         ImagesModule,
-        DevicesSyncModule
+        DevicesSyncModule,
+        ServeStaticModule.forRoot({
+            rootPath: join(process.cwd(), 'dist/apps/ac-frontend'),
+        }),
+
     ],
     controllers: [],
     providers: []
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { environment } from '../environments/environment';
 
-export function doUploadImage() {
+export function doUploadImage(fotoInicial?: string) {
     const [isUploading, setIsUploading] = useState(false);
-    const [foto, setFoto] = useState(null);
+    const [foto, setFoto] = useState<any | null>(fotoInicial ? { id: fotoInicial } : null);
 
     const handler = (file: File) => {
         setIsUploading(true);

@@ -14,7 +14,9 @@
                         "outputPath": "dist/apps/ac-backend",
                         "main": "apps/ac-backend/src/main.ts",
                         "tsConfig": "apps/ac-backend/tsconfig.app.json",
-                        "assets": ["apps/ac-backend/src/assets"]
+                        "assets": [
+                            "apps/ac-backend/src/assets"
+                        ]
                     },
                     "configurations": {
                         "production": {
@@ -40,8 +42,14 @@
                     "builder": "@nrwl/linter:lint",
                     "options": {
                         "linter": "eslint",
-                        "tsConfig": ["apps/ac-backend/tsconfig.app.json", "apps/ac-backend/tsconfig.spec.json"],
-                        "exclude": ["**/node_modules/**", "!apps/ac-backend/**/*"]
+                        "tsConfig": [
+                            "apps/ac-backend/tsconfig.app.json",
+                            "apps/ac-backend/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!apps/ac-backend/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -63,8 +71,14 @@
                 "lint": {
                     "builder": "@angular-devkit/build-angular:tslint",
                     "options": {
-                        "tsConfig": ["libs/devices/tsconfig.lib.json", "libs/devices/tsconfig.spec.json"],
-                        "exclude": ["**/node_modules/**", "!libs/devices/**/*"]
+                        "tsConfig": [
+                            "libs/devices/tsconfig.lib.json",
+                            "libs/devices/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/devices/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -91,7 +105,10 @@
                             "libs/devices-adapter/hikvision/tsconfig.lib.json",
                             "libs/devices-adapter/hikvision/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!libs/devices-adapter/hikvision/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/devices-adapter/hikvision/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -113,8 +130,14 @@
                 "lint": {
                     "builder": "@angular-devkit/build-angular:tslint",
                     "options": {
-                        "tsConfig": ["libs/agentes/tsconfig.lib.json", "libs/agentes/tsconfig.spec.json"],
-                        "exclude": ["**/node_modules/**", "!libs/agentes/**/*"]
+                        "tsConfig": [
+                            "libs/agentes/tsconfig.lib.json",
+                            "libs/agentes/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/agentes/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -136,8 +159,14 @@
                 "lint": {
                     "builder": "@angular-devkit/build-angular:tslint",
                     "options": {
-                        "tsConfig": ["libs/images/tsconfig.lib.json", "libs/images/tsconfig.spec.json"],
-                        "exclude": ["**/node_modules/**", "!libs/images/**/*"]
+                        "tsConfig": [
+                            "libs/images/tsconfig.lib.json",
+                            "libs/images/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/images/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -159,8 +188,14 @@
                 "lint": {
                     "builder": "@angular-devkit/build-angular:tslint",
                     "options": {
-                        "tsConfig": ["libs/devices-sync/tsconfig.lib.json", "libs/devices-sync/tsconfig.spec.json"],
-                        "exclude": ["**/node_modules/**", "!libs/devices-sync/**/*"]
+                        "tsConfig": [
+                            "libs/devices-sync/tsconfig.lib.json",
+                            "libs/devices-sync/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/devices-sync/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -187,7 +222,10 @@
                             "libs/ac-plugin-sqlserver/tsconfig.lib.json",
                             "libs/ac-plugin-sqlserver/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!libs/ac-plugin-sqlserver/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/ac-plugin-sqlserver/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -214,8 +252,14 @@
                         "main": "apps/ac-frontend/src/main.tsx",
                         "polyfills": "apps/ac-frontend/src/polyfills.ts",
                         "tsConfig": "apps/ac-frontend/tsconfig.app.json",
-                        "assets": ["apps/ac-frontend/src/favicon.ico", "apps/ac-frontend/src/assets"],
-                        "styles": ["apps/ac-frontend/src/styles.css"],
+                        "assets": [
+                            "apps/ac-frontend/src/favicon.ico",
+                            "apps/ac-frontend/src/assets"
+                        ],
+                        "styles": [
+                            "node_modules/@elastic/eui/dist/eui_theme_light.css",
+                            "apps/ac-frontend/src/styles.css"
+                        ],
                         "scripts": [],
                         "webpackConfig": "@nrwl/react/plugins/webpack"
                     },
@@ -259,8 +303,14 @@
                     "builder": "@nrwl/linter:lint",
                     "options": {
                         "linter": "eslint",
-                        "tsConfig": ["apps/ac-frontend/tsconfig.app.json", "apps/ac-frontend/tsconfig.spec.json"],
-                        "exclude": ["**/node_modules/**", "!apps/ac-frontend/**/*"]
+                        "tsConfig": [
+                            "apps/ac-frontend/tsconfig.app.json",
+                            "apps/ac-frontend/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!apps/ac-frontend/**/*"
+                        ]
                     }
                 },
                 "test": {

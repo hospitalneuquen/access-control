@@ -1,5 +1,13 @@
 import { Document, Types } from 'mongoose';
 
+
+export interface AgentesQuerySearch {
+    skip?: number;
+    limit?: number;
+    documento?: string;
+    nombre?: string;
+}
+
 export interface AgenteDTO {
     id?: string;
     nombre: string;

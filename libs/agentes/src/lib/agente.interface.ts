@@ -18,6 +18,8 @@ export interface AgenteDTO {
     foto: string;
     devices: Types.ObjectId[];
     identificadores: String[];
+    tags: String[];
+
 }
 
 export interface Agente extends Document {

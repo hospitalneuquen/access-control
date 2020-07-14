@@ -7,7 +7,7 @@ import { useFetchAgentes } from './agente-api';
 import { AgenteDTO } from '@access-control/agentes';
 
 export function AgentesListPage() {
-    const [search, setSearch] = useState('34934522');
+    const [search, setSearch] = useState('');
     const { status, data, isFetching } = useFetchAgentes(search);
 
     const loading = status === 'loading';

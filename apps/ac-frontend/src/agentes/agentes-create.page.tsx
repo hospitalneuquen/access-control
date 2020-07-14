@@ -19,6 +19,7 @@ export function AgentesUpdatePage() {
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [agente, setAgente] = useState(null);
+
     useEffect(() => {
         setLoading(true);
         getAgenteById(id).then((agente) => {

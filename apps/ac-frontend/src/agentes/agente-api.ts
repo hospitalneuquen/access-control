@@ -27,16 +27,16 @@ export function getAgenteById(id: string) {
     }).then(res => res.json())
 }
 
-export function useFetchAgentes(search: any) {
-    const fetchAgentes: any = (key, search) => {
+export function useFetchAgentes(search?: string) {
+    const fetchAgentes: any = (key, search: string) => {
         const controller = new AbortController();
         const signal = controller.signal;
 
-        if (!search) {
+        if (!search || search.length < 3) {
             return Promise.resolve([]);
         }
         let p;
-        if (!isNaN(search)) {
+        if (!isNaN(search as any)) {
             p = fetch(`${environment.API}api/agentes?documento=${search}`, { signal }).then(res => res.json());
         } else {
             p = fetch(`${environment.API}api/agentes?nombre=${search}`, { signal }).then(res => res.json());

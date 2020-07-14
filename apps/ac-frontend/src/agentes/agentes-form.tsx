@@ -80,7 +80,8 @@ export function AgentesForm(props) {
             active: true,
             foto: foto.id,
             devices: [],
-            identificadores: legacy.length > 0 ? ['rrhh-legacy|' + legacy] : []
+            identificadores: legacy.length > 0 ? ['rrhh-legacy|' + legacy] : [],
+            tags: ['fichada']
         }
         agenteCreateUpdate(agenteDTO).then((data) => {
             done && done();
@@ -94,6 +95,7 @@ export function AgentesForm(props) {
                     name="nombre"
                     value={nombre}
                     onChange={value => onChange(value, setNombre)}
+                    disabled={agente.id}
                 />
             </EuiFormRow>
 
@@ -102,6 +104,7 @@ export function AgentesForm(props) {
                     name="documento"
                     value={documento}
                     onChange={value => onChange(value, setDocumento)}
+                    disabled={agente.id}
                 />
             </EuiFormRow>
 
@@ -112,6 +115,7 @@ export function AgentesForm(props) {
                     onChange={value => onChange(value, setGenero)}
                     itemLayoutAlign="top"
                     hasDividers
+                    disabled={agente.id}
                 />
             </EuiFormRow>
 
@@ -119,6 +123,7 @@ export function AgentesForm(props) {
                 <EuiDatePicker
                     selected={fechaNacimiento}
                     onChange={value => onChange(value, setFechaNacimiento)}
+                    disabled={agente.id}
                 />
             </EuiFormRow>
 
@@ -127,6 +132,7 @@ export function AgentesForm(props) {
                     name="legacy"
                     value={legacy}
                     onChange={value => onChange(value, setLegacy)}
+                    disabled={agente.id}
                 />
             </EuiFormRow>
 

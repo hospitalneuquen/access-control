@@ -16,6 +16,24 @@ export function agenteCreateUpdate(agente: AgenteDTO) {
     }).then(res => res.json())
 }
 
+export function agenteSync(agente: AgenteDTO) {
+    const url = `${environment.API}api/devices-sync/sync`;
+
+    const data = {
+        "agenteId": agente.id,
+        "tags": ["fichada"]
+    }
+
+    return fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    }).then(res => res.json())
+}
+
 export function getAgenteById(id: string) {
     const url = `${environment.API}api/agentes/${id}`;
     return fetch(url, {

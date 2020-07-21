@@ -2,7 +2,7 @@ import React, { useState, FormEvent } from 'react';
 import { doUploadImage, checkExtension } from './upload-image';
 import moment from 'moment';
 import { AgenteDTO } from '@access-control/agentes';
-import { agenteCreateUpdate } from './agente-api';
+import { agenteCreateUpdate, agenteSync } from './agente-api';
 import { EuiForm, EuiFormRow, EuiFieldText, EuiSuperSelect, EuiDatePicker, EuiFilePicker, EuiImage, EuiSpacer, EuiButton } from '@elastic/eui';
 import { environment } from '../environments/environment';
 
@@ -84,6 +84,8 @@ export function AgentesForm(props) {
             tags: ['fichada']
         }
         agenteCreateUpdate(agenteDTO).then((data) => {
+            return agenteSync(agenteDTO);
+        }).then(() => {
             done && done();
         });
     }

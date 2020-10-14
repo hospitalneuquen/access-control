@@ -19,8 +19,8 @@ function getLegacy(agente) {
     if (!agente) {
         return '';
     }
-    const legacy: string = agente.identificadores.length > 0 && agente.identificadores[0];
-    return legacy.substr(12)
+    const legacy: string = agente.identificadores && agente.identificadores.length > 0 && agente.identificadores[0];
+    return legacy && legacy.substr(12)
 }
 
 export function AgentesForm(props) {

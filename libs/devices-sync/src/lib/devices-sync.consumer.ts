@@ -80,7 +80,9 @@ export class DevicesSyncConsumer {
             url: `${this.HOST}/api/images/${agente.foto}.jpeg`
         });
 
-        agente.devices.push(device.id);
+        if (!agente.devices.find(id => String(id) === String(device.id))) {
+            agente.devices.push(device.id);
+        }
 
         await agente.save();
 

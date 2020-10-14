@@ -7,6 +7,7 @@ import { join } from 'path';
 import { DevicesModule } from '@access-control/devices';
 import { AgentesModule } from '@access-control/agentes';
 import { ImagesModule } from '@access-control/images';
+import { TagsModule } from '@access-control/tags';
 import { DevicesSyncModule } from '@access-control/devices-sync';
 
 import { schemaDefaults } from './util/mongoose-default';
@@ -32,6 +33,7 @@ import { schemaDefaults } from './util/mongoose-default';
         AgentesModule,
         ImagesModule,
         DevicesSyncModule,
+        TagsModule,
         ServeStaticModule.forRoot({
             rootPath: join(process.cwd(), 'dist/apps/ac-frontend'),
         }),

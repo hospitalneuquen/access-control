@@ -3,10 +3,11 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { DevicesService } from '@access-control/devices';
 import { JobDevicesAgentSyncData, DEVICE_SYNC_QUEUE, DEVICE_AGENT_SYNC_JOB } from './devices-sync.consumer';
+import { AgentesService } from '@access-control/agentes';
 
 @Controller('devices-sync')
 export class DeviceSyncController {
-    constructor(private devicesService: DevicesService, @InjectQueue(DEVICE_SYNC_QUEUE) private devicesQueue: Queue) {}
+    constructor(private agenteService: AgentesService, private devicesService: DevicesService, @InjectQueue(DEVICE_SYNC_QUEUE) private devicesQueue: Queue) { }
 
     @Post('sync')
     async syncAgenteOnDevice(@Res() res, @Body() body: DeviceSyncPost) {
@@ -22,6 +23,9 @@ export class DeviceSyncController {
             const job = await this.devicesQueue.add(DEVICE_AGENT_SYNC_JOB, jobData);
         });
         await Promise.all(ps);
+
+        await this.agenteService.update(agenteId, { tags })
+
         res.json(devicesMatched);
     }
 }

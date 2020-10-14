@@ -46,6 +46,10 @@ export function AgenteItemCard({ agente }: { agente: AgenteDTO }) {
         history.push(`/agentes/${agente.id}`);
     }
 
+    const navigateToSync = (agente) => {
+        history.push(`/agentes/${agente.id}/sync`);
+    }
+    
     return (
         <EuiCard
             title={agente.nombre}
@@ -61,6 +65,9 @@ export function AgenteItemCard({ agente }: { agente: AgenteDTO }) {
             // }
             footer={
                 <EuiFlexGroup justifyContent="flexEnd">
+                    <EuiFlexItem grow={false}>
+                        <EuiButton iconType="refresh" onClick={() => navigateToSync(agente)}>Sync</EuiButton>
+                    </EuiFlexItem>
                     <EuiFlexItem grow={false}>
                         <EuiButton iconType="documentEdit" onClick={() => navigateTo(agente)}>Edit</EuiButton>
                     </EuiFlexItem>

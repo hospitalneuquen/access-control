@@ -11,18 +11,19 @@ export interface DeviceSearchParams {
 
 @Injectable()
 export class DevicesService {
-    constructor(@InjectModel(DEVICE_MODEL_TOKEN) private readonly deviceModel: Model<Device>) {}
+    constructor(@InjectModel(DEVICE_MODEL_TOKEN) private readonly deviceModel: Model<Device>) { }
 
     async search(params: DeviceSearchParams = {}, project: any = null) {
         const { tags, deviceIds } = params;
 
         const query: any = {
-            $and: []
+            // $and: []
         };
         if (tags && tags.length) {
-            tags.forEach((tag) => {
-                query.$and.push({ tags: tag });
-            });
+            // tags.forEach((tag) => {
+            //     query.$and.push({ tags: tag });
+            // });
+            query.tags = { $in: tags };
         }
         if (deviceIds && deviceIds.length) {
             query._id = { $in: deviceIds };

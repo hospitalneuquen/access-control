@@ -8,6 +8,7 @@ import { HomePage } from '../pages/home';
 import { DevicesPage } from '../devices/devices.page';
 import { AgentesListPage } from '../agentes/agentes-list.page';
 import { AgentesCreatePage, AgentesUpdatePage } from '../agentes/agentes-create.page';
+import { AgentesSyncPage } from '../agentes/agentes-sync.page';
 
 export const App = () => {
     return (
@@ -27,6 +28,10 @@ export const App = () => {
                 <Route
                     path="/agentes/create"
                     render={() => <AgentesCreatePage></AgentesCreatePage>}
+                />
+                <Route
+                    path="/agentes/:id/sync"
+                    render={() => <AgentesSyncPage></AgentesSyncPage>}
                 />
                 <Route
                     path="/agentes/:id"

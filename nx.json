@@ -42,6 +42,9 @@
         },
         "ac-frontend": {
             "tags": []
+        },
+        "tags": {
+            "tags": []
         }
     }
 }

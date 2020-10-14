@@ -16,12 +16,12 @@ export function agenteCreateUpdate(agente: AgenteDTO) {
     }).then(res => res.json())
 }
 
-export function agenteSync(agente: AgenteDTO) {
+export function agenteSync(agente: AgenteDTO, tags = ["fichada"]) {
     const url = `${environment.API}api/devices-sync/sync`;
 
     const data = {
         "agenteId": agente.id,
-        "tags": ["fichada"]
+        "tags": tags
     }
 
     return fetch(url, {

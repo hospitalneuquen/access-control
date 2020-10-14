@@ -13,7 +13,7 @@ export interface HikVisionOptions {
 export class HikVisionDevice {
     private client;
     private url: string;
-    constructor(options: HikVisionOptions) {
+    constructor(options: HikVisionOptions) { 
         this.client = new DigestFetch(options.user, options.password);
         this.url = `http://${options.host}:${options.port}`;
     }
@@ -60,12 +60,12 @@ export class HikVisionDevice {
     }
 
     public async count(): Promise<number> {
-        const response = await this.get('/ISAPI/AccessControl/UserInfo/Count');
+        const response = await this.get('/ISAPI/AccessControl/UserInfo/Count'); 
         return response?.UserInfoCount?.userNumber;
     }
 
     public async addUser(user: UserDTO) {
-        const data = createDTO(user);
+        const data = createDTO(user); 
         const response = await this.post('/ISAPI/AccessControl/UserInfo/Record', data);
         return response;
     }

@@ -17,7 +17,7 @@ import { HikVisionDevice, HikVisionOptions } from '@access-control/devices-adapt
 
 @Controller('devices')
 export class DeviceController {
-    constructor(private devicesService: DevicesService) {}
+    constructor(private devicesService: DevicesService) { }
 
     @Post('/test')
     async test(@Res() res, @Body() body: HikVisionOptions) {

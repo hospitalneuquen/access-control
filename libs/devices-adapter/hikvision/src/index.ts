@@ -134,12 +134,13 @@ export class HikVisionDevice {
             }
         };
         const response = await this.post('/ISAPI/AccessControl/AcsEvent', body);
-        const list = response.AcsEvent.InfoList || [];
+        const list = response.AcsEvent.InfoList || []; 
         return list.map((evt) => {
             return {
                 agenteId: evt.employeeNoString,
                 datetime: evt.time,
-                url: evt.pictureURL
+                url: evt.pictureURL,
+                attendanceStatus: evt.attendanceStatus
             };
         });
     }

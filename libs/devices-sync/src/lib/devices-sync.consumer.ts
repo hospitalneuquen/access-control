@@ -124,9 +124,15 @@ export class DevicesSyncConsumer {
         const entradaTag = device.tags.includes('entrada');
         const salidaTag = device.tags.includes('salida');
 
+        let esEntrada = entradaTag;
+
         if (entradaTag && salidaTag) {
-            this.logger.error(`device ${device.id} tiene entra y salida como tag`);
-            return;
+            if (item.attendanceStatus === 'checkIn' || item.attendanceStatus === 'checkOut') {
+                esEntrada = item.attendanceStatus === 'checkIn';
+            } else {
+                this.logger.error(`device ${device.id} tiene entra y salida como tag`);
+                return;
+            }
         }
 
         if (!entradaTag && !salidaTag) {
@@ -142,12 +148,13 @@ export class DevicesSyncConsumer {
         const identificador = agente.identificadores.find((ident) => ident.startsWith('rrhh-legacy'));
         const id = parseInt(identificador.substring(12), 10);
 
+
         const sqlExport = this.getSQLServer();
         const personalTable = this.configService.get('SQLSERVER_TABLE');
         const dto = {
             idAgente: id,
             fecha: new Date(item.datetime),
-            esEntrada: entradaTag,
+            esEntrada: esEntrada,
             reloj: 32
         };
 
@@ -184,4 +191,5 @@ interface DeviceEventDTO {
     agenteId: string;
     datetime: string;
     url: string;
+    attendanceStatus?: string;
 }

@@ -10,6 +10,7 @@ import { HikVisionDevice } from '@access-control/devices-adapter/hikvision';
 import { SQLServerConfig, SQLServerExport } from '@access-control/ac-plugin-sqlserver';
 import { DEVICE_EVENTS_MODEL_TOKEN } from './device-events/device-events.schema';
 import { DeviceEvents } from './device-events/device-events.interface';
+import { sub } from 'date-fns';
 
 export interface JobDevicesAgentSyncData {
     deviceId: string;
@@ -151,9 +152,12 @@ export class DevicesSyncConsumer {
 
         const sqlExport = this.getSQLServer();
         const personalTable = this.configService.get('SQLSERVER_TABLE');
+
+        const fecha = sub(new Date(item.datetime), { hours: 3 });
+
         const dto = {
             idAgente: id,
-            fecha: new Date(item.datetime),
+            fecha,
             esEntrada: esEntrada,
             reloj: 32
         };

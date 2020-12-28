@@ -10,7 +10,7 @@ import { InjectQueue } from '@nestjs/bull';
 export class DeviceEventsTasks {
     private readonly logger = new Logger(DeviceEventsTasks.name);
 
-    constructor(private devicesService: DevicesService, @InjectQueue(DEVICE_SYNC_QUEUE) private devicesQueue: Queue) {}
+    constructor(private devicesService: DevicesService, @InjectQueue(DEVICE_SYNC_QUEUE) private devicesQueue: Queue) { }
 
     @Cron('15 * * * * *')
     async handleCron() {
@@ -22,11 +22,11 @@ export class DeviceEventsTasks {
 
         for (const device of devicesMatched) {
             if (!device.lastSync) {
-                const lastSync = endOfMinute(subMinutes(now, 1));
+                const lastSync = endOfMinute(subMinutes(now, 3));
                 await this.devicesService.updateLastSync(device, lastSync);
             } else {
                 const start = device.lastSync;
-                const end = endOfMinute(subMinutes(now, 1));
+                const end = endOfMinute(subMinutes(now, 3));
                 const jobData: JobDeviceEventsSyncData = {
                     deviceId: device.id,
                     startTime: start.toISOString(),

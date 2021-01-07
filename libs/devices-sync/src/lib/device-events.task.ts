@@ -22,11 +22,11 @@ export class DeviceEventsTasks {
 
         for (const device of devicesMatched) {
             if (!device.lastSync) {
-                const lastSync = endOfMinute(subMinutes(now, 3));
+                const lastSync = endOfMinute(subMinutes(now, 5));
                 await this.devicesService.updateLastSync(device, lastSync);
             } else {
-                const start = device.lastSync;
-                const end = endOfMinute(subMinutes(now, 3));
+                const start = endOfMinute(subMinutes(device.lastSync, 5));;
+                const end = endOfMinute(subMinutes(now, 5));
                 const jobData: JobDeviceEventsSyncData = {
                     deviceId: device.id,
                     startTime: start.toISOString(),

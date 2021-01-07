@@ -97,9 +97,13 @@ export class DevicesSyncConsumer {
         const end = new Date(endTime);
         const [device, client] = await this.getDeviceAndCliente(deviceId);
 
-        this.logger.debug(`sync events ${deviceId} from ${startTime} to ${endTime}`);
 
         const eventos: DeviceEventDTO[] = await client.getEvents(start, end);
+
+        if (eventos.length > 0) {
+            this.logger.debug(`sync events ${deviceId} from ${startTime} to ${endTime} [len=${eventos.length}]`);
+        }
+
         for (const evt of eventos) {
             const ok = await this.createEvent(device, evt);
             if (ok) {

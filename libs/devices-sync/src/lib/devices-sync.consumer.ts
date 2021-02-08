@@ -167,6 +167,19 @@ export class DevicesSyncConsumer {
         };
 
         await sqlExport.insert(personalTable, dto);
+
+        const dto2 = {
+            syncTries: 0,
+            idFichada: 0,
+            idAgente: id,
+            fecha,
+            esEntrada: esEntrada,
+            reloj: 32,
+            syncError: null
+        };
+
+
+        await sqlExport.insert('Personal_FichadasSync', dto2);
     }
 
     async createEvent(device: Device, item: DeviceEventDTO) {

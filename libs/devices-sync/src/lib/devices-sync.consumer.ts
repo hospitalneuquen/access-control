@@ -75,6 +75,8 @@ export class DevicesSyncConsumer {
             name: agente.nombre
         });
 
+        this.logger.debug(r);
+
         const r2 = await deviceClient.addPhoto({
             id: agente.id,
             name: agente.nombre,

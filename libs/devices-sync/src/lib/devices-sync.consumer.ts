@@ -75,7 +75,9 @@ export class DevicesSyncConsumer {
             name: agente.nombre
         });
 
-        this.logger.debug(r);
+        if (r.statusString !== 'OK') {
+            this.logger.debug(`ERROR SYNC ${agente.nombre} -> ${device.id}`);
+        }
 
         const r2 = await deviceClient.addPhoto({
             id: agente.id,

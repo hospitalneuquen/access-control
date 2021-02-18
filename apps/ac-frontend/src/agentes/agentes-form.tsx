@@ -83,9 +83,7 @@ export function AgentesForm(props) {
             identificadores: legacy.length > 0 ? ['rrhh-legacy|' + legacy] : [],
             tags: ['fichada']
         }
-        agenteCreateUpdate(agenteDTO).then((data) => {
-            return agenteSync(agenteDTO);
-        }).then(() => {
+        agenteCreateUpdate(agenteDTO).then(() => {
             done && done();
         });
     }

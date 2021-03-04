@@ -28,10 +28,34 @@ export class DeviceSyncController {
 
         res.json(devicesMatched);
     }
+
+    @Post('copy')
+    async copyDevice(@Res() res, @Body() body: DeviceCopyPost) {
+        const { source, target } = body;
+
+        const agentes = await this.agenteService.getAll({ device: source });
+
+        const ps = agentes.map(async (agente) => {
+            const jobData: JobDevicesAgentSyncData = {
+                agenteId: agente.id,
+                deviceId: target
+            };
+            const job = await this.devicesQueue.add(DEVICE_AGENT_SYNC_JOB, jobData);
+        });
+        await Promise.all(ps);
+
+
+        res.json(agentes);
+    }
 }
 
 interface DeviceSyncPost {
     agenteId: string;
     tags?: [string];
     devices?: [string];
+}
+
+interface DeviceCopyPost {
+    source: string;
+    target: string;
 }

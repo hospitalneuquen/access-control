@@ -10,20 +10,29 @@ export class AgentesService {
 
     async getAll(query: AgentesQuerySearch = {}): Promise<Agente[]> {
         const q: any = {};
+
         if (query.documento) {
             q.documento = query.documento;
         }
+
         if (query.nombre) {
             q.nombre = new RegExp('.*' + query.nombre + '.*', 'i');
         }
 
+        if (query.device) {
+            q.devices = new Types.ObjectId(query.device);
+        }
+
         const command = this.agenteModel.find(q);
+
         if (query.limit) {
             command.limit(query.limit);
         }
+
         if (query.skip) {
             command.skip(query.skip);
         }
+
 
         const agentes = await this.agenteModel.find(q);
         return agentes;

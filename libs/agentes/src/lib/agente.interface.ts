@@ -6,6 +6,7 @@ export interface AgentesQuerySearch {
     limit?: number;
     documento?: string;
     nombre?: string;
+    device?: string;
 }
 
 export interface AgenteDTO {

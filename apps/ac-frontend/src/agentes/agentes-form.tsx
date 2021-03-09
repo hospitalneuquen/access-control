@@ -81,7 +81,7 @@ export function AgentesForm(props) {
             foto: foto.id,
             devices: [],
             identificadores: legacy.length > 0 ? ['rrhh-legacy|' + legacy] : [],
-            tags: ['fichada']
+            tags: []
         }
         agenteCreateUpdate(agenteDTO).then(() => {
             done && done();

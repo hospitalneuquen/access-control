@@ -163,27 +163,32 @@ export class DevicesSyncConsumer {
 
         const fecha = sub(new Date(item.datetime), { hours: 3 });
 
-        const dto = {
-            idAgente: id,
-            fecha,
-            esEntrada: esEntrada,
-            reloj: 32
-        };
+        try {
+            const dto = {
+                idAgente: id,
+                fecha,
+                esEntrada: esEntrada,
+                reloj: 32
+            };
 
-        await sqlExport.insert(personalTable, dto);
+            await sqlExport.insert(personalTable, dto);
 
-        const dto2 = {
-            syncTries: 0,
-            idFichada: 0,
-            idAgente: id,
-            fecha,
-            esEntrada: esEntrada,
-            reloj: 32,
-            syncError: null
-        };
+            const dto2 = {
+                syncTries: 0,
+                idFichada: 0,
+                idAgente: id,
+                fecha,
+                esEntrada: esEntrada,
+                reloj: 32,
+                syncError: null
+            };
 
 
-        await sqlExport.insert('Personal_FichadasSync', dto2);
+            await sqlExport.insert('Personal_FichadasSync', dto2);
+
+        } catch (err) {
+            this.logger.error(err);
+        }
     }
 
     async createEvent(device: Device, item: DeviceEventDTO) {

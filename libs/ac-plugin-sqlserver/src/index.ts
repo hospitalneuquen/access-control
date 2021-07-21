@@ -18,7 +18,7 @@ export class SQLServerExport {
         const cols = [];
         const inputs = [];
 
-        for (let k in data) {
+        for (const k in data) {
             request.input(k, data[k]);
             cols.push(k);
             inputs.push('@' + k);
@@ -37,4 +37,5 @@ export interface SQLServerConfig {
     database: string;
     connectionTimeout?: number;
     requestTimeout?: number;
+    options: any;
 }

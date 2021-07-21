@@ -1,16 +1,16 @@
-import { Job } from 'bull';
-import { Logger } from '@nestjs/common';
-import { Types, Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { Processor, Process } from '@nestjs/bull';
-import { ConfigService } from '@nestjs/config';
-import { DevicesService, Device } from '@access-control/devices';
-import { AgentesService } from '@access-control/agentes';
-import { HikVisionDevice } from '@access-control/devices-adapter/hikvision';
 import { SQLServerConfig, SQLServerExport } from '@access-control/ac-plugin-sqlserver';
-import { DEVICE_EVENTS_MODEL_TOKEN } from './device-events/device-events.schema';
-import { DeviceEvents } from './device-events/device-events.interface';
+import { AgentesService } from '@access-control/agentes';
+import { Device, DevicesService } from '@access-control/devices';
+import { HikVisionDevice } from '@access-control/devices-adapter/hikvision';
+import { Process, Processor } from '@nestjs/bull';
+import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { InjectModel } from '@nestjs/mongoose';
+import { Job } from 'bull';
 import { sub } from 'date-fns';
+import { Model, Types } from 'mongoose';
+import { DeviceEvents } from './device-events/device-events.interface';
+import { DEVICE_EVENTS_MODEL_TOKEN } from './device-events/device-events.schema';
 
 export interface JobDevicesAgentSyncData {
     deviceId: string;
@@ -124,7 +124,8 @@ export class DevicesSyncConsumer {
             port: parseInt(this.configService.get('SQLSERVER_PORT') || '1434', 10),
             user: this.configService.get('SQLSERVER_USER'),
             password: this.configService.get('SQLSERVER_PASSWORD'),
-            database: this.configService.get('SQLSERVER_DATABASE')
+            database: this.configService.get('SQLSERVER_DATABASE'),
+            options: { encrypt: false }
         };
         return new SQLServerExport(config);
     }

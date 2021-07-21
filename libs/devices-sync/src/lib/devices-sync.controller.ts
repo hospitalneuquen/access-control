@@ -142,7 +142,8 @@ export class DeviceSyncController {
             port: parseInt(this.configService.get('SQLSERVER_PORT') || '1434', 10),
             user: this.configService.get('SQLSERVER_USER'),
             password: this.configService.get('SQLSERVER_PASSWORD'),
-            database: this.configService.get('SQLSERVER_DATABASE')
+            database: this.configService.get('SQLSERVER_DATABASE'),
+            options: { encrypt: false }
         };
         return new SQLServerExport(config);
     }

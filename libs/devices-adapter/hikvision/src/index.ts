@@ -118,7 +118,7 @@ export class HikVisionDevice {
         return response;
     }
 
-    public async getEvents(start: Date, end: Date) {
+    public async getEvents(start: Date, end: Date, agenteId: string = undefined) {
         const startTime = format(start, "yyyy-MM-dd'T'HH:mm:ssxxx");
         const endTime = format(end, "yyyy-MM-dd'T'HH:mm:ssxxx");
         const time = '' + Date.now();
@@ -130,7 +130,8 @@ export class HikVisionDevice {
                 major: 5,
                 minor: 75,
                 startTime,
-                endTime
+                endTime,
+                employeeNoString: agenteId
             }
         };
         const response = await this.post('/ISAPI/AccessControl/AcsEvent', body);

@@ -9,7 +9,11 @@ export class AgentesService {
     constructor(@InjectModel(AGENTE_MODEL_TOKEN) private readonly agenteModel: Model<Agente>) { }
 
     async getAll(query: AgentesQuerySearch = {}): Promise<Agente[]> {
-        const q: any = {};
+        let q: any = {};
+
+        if (query.raw) {
+            q = { ...query.raw };
+        }
 
         if (query.documento) {
             q.documento = query.documento;

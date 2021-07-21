@@ -1,19 +1,10 @@
-import { DevicesService } from './devices.service';
+import { HikVisionDevice, HikVisionOptions } from '@access-control/devices-adapter/hikvision';
 import {
-    Controller,
-    Get,
-    Res,
-    HttpStatus,
-    Post,
-    Body,
-    NotFoundException,
-    Delete,
-    Param,
-    Patch,
-    Query
+    Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param,
+    Patch, Post, Query, Res
 } from '@nestjs/common';
 import { DeviceRequest } from './device.interface';
-import { HikVisionDevice, HikVisionOptions } from '@access-control/devices-adapter/hikvision';
+import { DevicesService } from './devices.service';
 
 @Controller('devices')
 export class DeviceController {
@@ -59,6 +50,26 @@ export class DeviceController {
         return res.status(HttpStatus.OK).json(users);
     }
 
+
+    @Delete('/:id/delete')
+    async deletePeople(@Res() res, @Param('id') deviceID: string) {
+        const device = await this.devicesService.findById(deviceID);
+        if (!device) {
+            throw new NotFoundException('device not found');
+        }
+        const deviceClient = new HikVisionDevice(device);
+        const users = await deviceClient.listUser({ limit: 50, skip: 0 });
+
+        for (const user of users) {
+
+            await deviceClient.deleteUser(user.employeeNo);
+
+        }
+
+
+        return res.status(HttpStatus.OK).json(users);
+    }
+
     @Get('/:id/events')
     async getEvents(@Res() res, @Param('id') deviceID: string, @Query() query) {
         const device = await this.devicesService.findById(deviceID);
@@ -66,7 +77,7 @@ export class DeviceController {
             throw new NotFoundException('device not found');
         }
         const deviceClient = new HikVisionDevice(device);
-        const users = await deviceClient.getEvents(new Date(query.start), new Date(query.end));
+        const users = await deviceClient.getEvents(new Date(query.start), new Date(query.end), query.agente);
         return res.status(HttpStatus.OK).json(users);
     }
 
@@ -106,4 +117,6 @@ export class DeviceController {
         }
         return res.status(HttpStatus.OK).json(device);
     }
+
+
 }

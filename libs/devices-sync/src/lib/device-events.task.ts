@@ -1,10 +1,10 @@
+import { DevicesService } from '@access-control/devices';
+import { InjectQueue } from '@nestjs/bull';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { DevicesService } from '@access-control/devices';
-import { subMinutes, endOfMinute } from 'date-fns';
 import { Queue } from 'bull';
-import { DEVICE_SYNC_QUEUE, DEVICE_EVENTS_SYNC_JOB, JobDeviceEventsSyncData } from './devices-sync.consumer';
-import { InjectQueue } from '@nestjs/bull';
+import { endOfMinute, subMinutes } from 'date-fns';
+import { DEVICE_EVENTS_SYNC_JOB, DEVICE_SYNC_QUEUE, JobDeviceEventsSyncData } from './devices-sync.consumer';
 
 @Injectable()
 export class DeviceEventsTasks {

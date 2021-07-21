@@ -7,6 +7,7 @@ export interface AgentesQuerySearch {
     documento?: string;
     nombre?: string;
     device?: string;
+    raw?: any;
 }
 
 export interface AgenteDTO {

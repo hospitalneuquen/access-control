@@ -23,7 +23,9 @@ export function AgentesSyncPage() {
     }, [id]);
 
     useEffect(() => {
-        getTags().then(tags => setTags(tags))
+        getTags().then(
+            tags => setTags(tags.filter(t => t !== 'entrada' && t !== 'salida')) 
+            )
     }, []);
 
     useEffect(() => {

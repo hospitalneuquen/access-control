@@ -1,7 +1,7 @@
+import { format } from 'date-fns';
 import * as DigestFetch from 'digest-fetch';
 import * as querystring from 'querystring';
-import { UserDTO, createDTO, PhotoDTO } from './create-user-dto';
-import { format } from 'date-fns';
+import { createDTO, PhotoDTO, UserDTO } from './create-user-dto';
 
 export interface HikVisionOptions {
     host: string;
@@ -74,13 +74,26 @@ export class HikVisionDevice {
         const bodyDelete = { UserInfoDelCond: { EmployeeNoList: [{ employeeNo: userID }] } };
         const response = await this.put('/ISAPI/AccessControl/UserInfo/Delete', bodyDelete);
         return response;
+    } 
+
+    public async getAll() {
+        let usuarios = [];
+        let contador = 0;
+        const total = await this.count(); 
+
+        while (total > contador) {
+            const us = await this.listUser({ skip: contador, limit: 30 }); 
+            contador += us.length;
+            usuarios = [...usuarios, ...us]; 
+        }
+        return usuarios;
     }
 
     public async listUser({ limit, skip }: { limit: number; skip: number }) {
         const time = '' + Date.now();
         const body = { UserInfoSearchCond: { searchID: time, searchResultPosition: skip, maxResults: limit } };
         const response = await this.post('/ISAPI/AccessControl/UserInfo/Search', body);
-        return response.UserInfoSearch.UserInfo;
+        return response.UserInfoSearch?.UserInfo || [];
     }
 
     public async getPhoto(employeeNo: string) {

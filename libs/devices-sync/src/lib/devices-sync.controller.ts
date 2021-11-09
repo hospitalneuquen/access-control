@@ -24,6 +24,8 @@ export class DeviceSyncController {
 
         const devicesMatched = await this.devicesService.search({ tags, deviceIds: devices });
 
+        await this.agenteService.update(agenteId, { tags, devices: [] });
+
         const ps = devicesMatched.map(async (device) => {
             const jobData: JobDevicesAgentSyncData = {
                 agenteId: agenteId,
@@ -33,9 +35,34 @@ export class DeviceSyncController {
         });
         await Promise.all(ps);
 
-        await this.agenteService.update(agenteId, { tags })
 
         res.json(devicesMatched);
+    }
+
+    @Post('re-sync')
+    async syncDeviceAgentes(@Res() res) {
+        const devices = await this.devicesService.getAll({ active: true }, { host: 1, port: 1, user: 1, password: 1, tags: 1 });
+
+        await this.agenteService.cleanDevices();
+
+        for (const device of devices) {
+            const deviceClient = new HikVisionDevice(device);
+            const usuarios = await deviceClient.getAll();
+
+            console.log(device.id, usuarios.length)
+
+            for (const user of usuarios) {
+                try {
+                    await this.agenteService.addDevice(user.employeeNo, device.id);
+                } catch (e) {
+                    console.log('error', user.employeeNo, device.id)
+                }
+            }
+
+        }
+
+        return res.json({ ok: 1 })
+
     }
 
     @Post('copy')

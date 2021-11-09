@@ -14,6 +14,8 @@ export function AgentesSyncPage() {
     const [tags, setTags] = useState([]);
     const [tagsSelected, setTagsSelected] = useState({});
 
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         setLoading(true);
         getAgenteById(id).then((agente) => {
@@ -46,6 +48,8 @@ export function AgentesSyncPage() {
     const onSave = () => {  
         const tags = Object.entries(tagsSelected).filter(([k, v]) => v).map(([k]) => k);
         agenteSync(agente, tags);
+        setIsLoading(true);
+        setTimeout(() => setIsLoading(false), 1000);
     }
 
     return (
@@ -58,7 +62,7 @@ export function AgentesSyncPage() {
                     onChange={onChange}
                   />                        
                 }
-                <EuiButton onClick={onSave}>
+                <EuiButton onClick={onSave} disabled={isLoading}>
                     GRABAR
                 </EuiButton>
             </Loading>

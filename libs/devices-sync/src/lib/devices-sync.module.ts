@@ -1,15 +1,16 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { BullModule } from '@nestjs/bull';
-import { ConfigService } from '@nestjs/config';
-import { ScheduleModule } from '@nestjs/schedule';
-
-import { DevicesService, DEVICE_SCHEMA_MONGOOSE } from '@access-control/devices';
 import { AgentesService, AGENTE_SCHEMA_MONGOOSE } from '@access-control/agentes';
-import { DEVICE_EVENTS_SCHEMA_MONGOOSE } from './device-events/device-events.schema';
-import { DeviceSyncController } from './devices-sync.controller';
-import { DevicesSyncConsumer, DEVICE_SYNC_QUEUE } from './devices-sync.consumer';
+import { DevicesService, DEVICE_SCHEMA_MONGOOSE } from '@access-control/devices';
+import { WebsocketModule, WSGateway } from '@access-control/websocket';
+import { BullModule } from '@nestjs/bull';
+import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ScheduleModule } from '@nestjs/schedule';
 import { DeviceEventsTasks } from './device-events.task';
+import { DEVICE_EVENTS_SCHEMA_MONGOOSE } from './device-events/device-events.schema';
+import { DevicesSyncConsumer, DEVICE_SYNC_QUEUE } from './devices-sync.consumer';
+import { DeviceSyncController } from './devices-sync.controller';
+
 
 @Module({
     imports: [
@@ -24,10 +25,11 @@ import { DeviceEventsTasks } from './device-events.task';
             }),
             inject: [ConfigService]
         }),
-        ScheduleModule.forRoot()
+        ScheduleModule.forRoot(),
+        WebsocketModule
     ],
     controllers: [DeviceSyncController],
-    providers: [AgentesService, DevicesService, DevicesSyncConsumer, DeviceEventsTasks],
+    providers: [AgentesService, DevicesService, DevicesSyncConsumer, DeviceEventsTasks, WSGateway],
     exports: []
 })
-export class DevicesSyncModule {}
+export class DevicesSyncModule { }

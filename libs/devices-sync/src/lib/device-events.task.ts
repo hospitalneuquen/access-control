@@ -14,6 +14,7 @@ export class DeviceEventsTasks {
 
     @Cron('15 * * * * *')
     async handleCron() {
+        return;
         this.logger.debug('Running device events sync task');
         const now = new Date();
 

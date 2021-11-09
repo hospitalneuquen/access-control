@@ -2,6 +2,7 @@ import { SQLServerConfig, SQLServerExport } from '@access-control/ac-plugin-sqls
 import { AgentesService } from '@access-control/agentes';
 import { Device, DevicesService } from '@access-control/devices';
 import { HikVisionDevice } from '@access-control/devices-adapter/hikvision';
+import { WSGateway } from '@access-control/websocket';
 import { Process, Processor } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -37,7 +38,8 @@ export class DevicesSyncConsumer {
         private devicesService: DevicesService,
         private agenteService: AgentesService,
         private configService: ConfigService,
-        @InjectModel(DEVICE_EVENTS_MODEL_TOKEN) private readonly deviceEventsModel: Model<DeviceEvents>
+        @InjectModel(DEVICE_EVENTS_MODEL_TOKEN) private readonly deviceEventsModel: Model<DeviceEvents>,
+        private ws: WSGateway
     ) {
         this.HOST = this.configService.get('APP_HOST');
     }
@@ -77,6 +79,7 @@ export class DevicesSyncConsumer {
 
         if (r.statusString !== 'OK') {
             this.logger.debug(`ERROR SYNC ${agente.nombre} -> ${device.id}`);
+            this.ws.server.emit('agente-sync', { succes: false, device, agente });
         }
 
         const r2 = await deviceClient.addPhoto({
@@ -85,11 +88,18 @@ export class DevicesSyncConsumer {
             url: `${this.HOST}/api/images/${agente.foto}.jpeg`
         });
 
+        if (r2.statusString !== 'OK') {
+            this.logger.debug(`ERROR SYNC ${agente.nombre} -> ${device.id}`);
+            this.ws.server.emit('agente-sync', { succes: false, device, agente });
+        }
+
         if (!agente.devices.find(id => String(id) === String(device.id))) {
             agente.devices.push(device.id);
         }
 
         await agente.save();
+
+        this.ws.server.emit('agente-sync', { succes: true, device, agente });
 
         return true;
     }

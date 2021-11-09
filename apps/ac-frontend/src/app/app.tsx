@@ -1,5 +1,5 @@
 import "@babel/polyfill";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '@elastic/eui/dist/eui_theme_light.css';
 
 import { Route, Link, Switch } from 'react-router-dom';
@@ -9,10 +9,54 @@ import { DevicesPage } from '../devices/devices.page';
 import { AgentesListPage } from '../agentes/agentes-list.page';
 import { AgentesCreatePage, AgentesUpdatePage } from '../agentes/agentes-create.page';
 import { AgentesSyncPage } from '../agentes/agentes-sync.page';
+import {io } from "socket.io-client";
+import { EuiGlobalToastList } from "@elastic/eui";
+import { environment } from "../environments/environment";
 
 export const App = () => {
+    const [toasts, setToast] = useState([]);
+    
+
+    useEffect(() => {
+        const socket = io(environment.API);
+        socket.on("connect", () => {
+            console.log(socket.connected); // true
+        });
+
+        socket.on('agente-sync', (args) => {
+            const t = createToast(args);
+            setToast(prev => [...prev, t]);
+        })
+
+      }, []);
+
+      let toatsID = 0;
+      const createToast = (evento) => {
+          return {
+              id: '' + toatsID++, 
+            title: evento.succes ?  'Sincronizacion con exito' : 'Sincronizacion ha fallado',
+            color: evento.succes ? 'success' : 'danger',
+            iconType: 'aggregate',
+            toastLifeTimeMs: 5000,
+            text: (
+              <p>
+                { evento.agente.nombre } se sincronizo en el reloj { evento.device.name }
+              </p>
+            ),
+          }
+      }
+
+      const removeToast = removedToast => {
+        setToast(toasts.filter(toast => toast.id !== removedToast.id));
+      };
+
     return (
         <div>
+            <EuiGlobalToastList
+      toasts={toasts}
+      dismissToast={removeToast}
+      toastLifeTimeMs={6000}
+    />
             <NavBar />
 
             <Switch>

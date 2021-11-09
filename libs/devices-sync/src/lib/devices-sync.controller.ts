@@ -64,30 +64,42 @@ export class DeviceSyncController {
         const devices = await this.devicesService.getAll({}, { host: 1, port: 1, user: 1, password: 1, tags: 1 });
 
         const agentes = await this.agenteService.getAll({
-            raw: {
-                documento: {
-                    $in: [
-                        // "37859007",
-                        // "42449399",
-                        // "33952286",
-                        // "30500111",
-                        "32428143",
-                    ]
-                }
-            }
+            // raw: {
+            // documento: {
+            //     $in: [
+            //         // "37859007",
+            //         // "42449399",
+            //         // "33952286",
+            //         // "30500111",
+            //         "33975006",
+            //     ]
+            // }
+
+            // }
         });
 
         const sqlExport = this.getSQLServer();
 
+        const total = agentes.length;
+        let i = 0;
 
         for (const agente of agentes) {
+            i++;
+            console.log(i, '/', total)
+            if (!agente.identificadores || agente.identificadores.length === 0) {
+                continue;
+            }
             for (const device of devices) {
                 const deviceClient = new HikVisionDevice(device);
                 if (!device.tags.includes('entrada') && !device.tags.includes('salida')) {
                     continue;
                 }
 
-                const events = await deviceClient.getEvents(new Date('2021-07-01'), new Date('2021-07-30'), String(agente.id));
+                const events = await deviceClient.getEvents(
+                    new Date('2021-10-07'),
+                    new Date('2021-10-13'),
+                    String(agente.id)
+                );
 
 
 
@@ -123,9 +135,9 @@ export class DeviceSyncController {
                     };
 
 
-                    console.log(dto2)
 
-                    await sqlExport.insert('Personal_FichadasSync', dto2);
+                    const r = await sqlExport.insert('Personal_FichadasSync', dto2);
+                    // console.log(r);
 
                 }
 

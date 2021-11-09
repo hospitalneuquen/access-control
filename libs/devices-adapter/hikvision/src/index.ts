@@ -1,7 +1,7 @@
+import { format } from 'date-fns';
 import * as DigestFetch from 'digest-fetch';
 import * as querystring from 'querystring';
-import { UserDTO, createDTO, PhotoDTO } from './create-user-dto';
-import { format } from 'date-fns';
+import { createDTO, PhotoDTO, UserDTO } from './create-user-dto';
 
 export interface HikVisionOptions {
     host: string;
@@ -35,7 +35,7 @@ export class HikVisionDevice {
         const qs = querystring.stringify({
             format: 'json',
             ...params
-        });
+        });  
         return this.client
             .fetch(`${this.url}${url}?${qs}`, {
                 method: 'POST',
@@ -134,7 +134,7 @@ export class HikVisionDevice {
                 employeeNoString: agenteId
             }
         };
-        const response = await this.post('/ISAPI/AccessControl/AcsEvent', body);
+        const response = await this.post('/ISAPI/AccessControl/AcsEvent', body); 
         const list = response.AcsEvent.InfoList || []; 
         return list.map((evt) => {
             return {

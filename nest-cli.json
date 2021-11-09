@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "websocket": {
+      "type": "library",
+      "root": "libs/websocket",
+      "entryFile": "index",
+      "sourceRoot": "libs/websocket/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/websocket/tsconfig.lib.json"
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
+}

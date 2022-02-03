@@ -46,7 +46,8 @@ export class DeviceController {
             throw new NotFoundException('device not found');
         }
         const deviceClient = new HikVisionDevice(device);
-        const users = await deviceClient.listUser({ limit: 50, skip: 0 });
+
+        const users = await deviceClient.getAll();
         return res.status(HttpStatus.OK).json(users);
     }
 

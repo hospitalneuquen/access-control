@@ -67,4 +67,17 @@ export class AgentesService {
         const deletedAgente = await this.agenteModel.findByIdAndRemove(agenteID);
         return deletedAgente;
     }
+
+    async cleanDevices() {
+        return this.agenteModel.updateMany({}, { devices: [] });
+    }
+
+    addDevice(agenteID, deviceId) {
+        return this.agenteModel.updateOne(
+            { _id: new Types.ObjectId(agenteID) },
+            {
+                $push: { devices: new Types.ObjectId(deviceId) }
+            }
+        );
+    }
 }

@@ -3,7 +3,7 @@ import { AgentesService } from '@access-control/agentes';
 import { DevicesService } from '@access-control/devices';
 import { HikVisionDevice } from '@access-control/devices-adapter/hikvision';
 import { InjectQueue } from '@nestjs/bull';
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Queue } from 'bull';
 import { sub } from 'date-fns';
@@ -24,6 +24,8 @@ export class DeviceSyncController {
 
         const devicesMatched = await this.devicesService.search({ tags, deviceIds: devices });
 
+        await this.agenteService.update(agenteId, { tags, devices: [] });
+
         const ps = devicesMatched.map(async (device) => {
             const jobData: JobDevicesAgentSyncData = {
                 agenteId: agenteId,
@@ -33,9 +35,34 @@ export class DeviceSyncController {
         });
         await Promise.all(ps);
 
-        await this.agenteService.update(agenteId, { tags })
 
         res.json(devicesMatched);
+    }
+
+    @Post('re-sync')
+    async syncDeviceAgentes(@Res() res) {
+        const devices = await this.devicesService.getAll({ active: true }, { host: 1, port: 1, user: 1, password: 1, tags: 1 });
+
+        await this.agenteService.cleanDevices();
+
+        for (const device of devices) {
+            const deviceClient = new HikVisionDevice(device);
+            const usuarios = await deviceClient.getAll();
+
+            console.log(device.id, usuarios.length)
+
+            for (const user of usuarios) {
+                try {
+                    await this.agenteService.addDevice(user.employeeNo, device.id);
+                } catch (e) {
+                    console.log('error', user.employeeNo, device.id)
+                }
+            }
+
+        }
+
+        return res.json({ ok: 1 })
+
     }
 
     @Post('copy')
@@ -59,45 +86,36 @@ export class DeviceSyncController {
 
 
 
-    @Get('/magia')
-    async magia(@Res() res) {
-        const devices = await this.devicesService.getAll({}, { host: 1, port: 1, user: 1, password: 1, tags: 1 });
+    @Post('/magia')
+    async magia(@Res() res, @Body() body: any) {
+        const raw$: any = {};
+        if (body.documentos) {
+            raw$.documentos = body.documentos;
+        }
+        const desde = new Date(body.desde);
+        const hasta = new Date(body.hasta);
+
+        const devices = await this.devicesService.getAll({ active: true }, { host: 1, port: 1, user: 1, password: 1, tags: 1 });
 
         const agentes = await this.agenteService.getAll({
-            // raw: {
-            // documento: {
-            //     $in: [
-            //         // "37859007",
-            //         // "42449399",
-            //         // "33952286",
-            //         // "30500111",
-            //         "33975006",
-            //     ]
-            // }
-
-            // }
+            raw: raw$
         });
 
         const sqlExport = this.getSQLServer();
-
-        const total = agentes.length;
         let i = 0;
 
         for (const agente of agentes) {
             i++;
-            console.log(i, '/', total)
-            if (!agente.identificadores || agente.identificadores.length === 0) {
-                continue;
-            }
+            console.log(i, agente.documento)
             for (const device of devices) {
+
                 const deviceClient = new HikVisionDevice(device);
                 if (!device.tags.includes('entrada') && !device.tags.includes('salida')) {
                     continue;
                 }
-
                 const events = await deviceClient.getEvents(
-                    new Date('2021-10-07'),
-                    new Date('2021-10-13'),
+                    desde,
+                    hasta,
                     String(agente.id)
                 );
 
@@ -135,6 +153,7 @@ export class DeviceSyncController {
                     };
 
 
+                    console.log(dto2.idAgente, dto2.fecha, dto2.esEntrada);
 
                     const r = await sqlExport.insert('Personal_FichadasSync', dto2);
                     // console.log(r);

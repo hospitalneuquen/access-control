@@ -2,6 +2,7 @@ import { SQLServerConfig, SQLServerExport } from '@access-control/ac-plugin-sqls
 import { AgentesService } from '@access-control/agentes';
 import { DevicesService } from '@access-control/devices';
 import { HikVisionDevice } from '@access-control/devices-adapter/hikvision';
+import { WSGateway } from '@access-control/websocket';
 import { InjectQueue } from '@nestjs/bull';
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -15,7 +16,8 @@ export class DeviceSyncController {
         private configService: ConfigService,
         private agenteService: AgentesService,
         private devicesService: DevicesService,
-        @InjectQueue(DEVICE_SYNC_QUEUE) private devicesQueue: Queue
+        @InjectQueue(DEVICE_SYNC_QUEUE) private devicesQueue: Queue,
+        private ws: WSGateway
     ) { }
 
     @Post('sync')
@@ -86,7 +88,7 @@ export class DeviceSyncController {
 
 
 
-    @Post('/magia')
+    @Post('/relojes')
     async magia(@Res() res, @Body() body: any) {
         const raw$: any = {};
         if (body.documentos) {
@@ -103,60 +105,76 @@ export class DeviceSyncController {
 
         const sqlExport = this.getSQLServer();
         let i = 0;
+        this.ws.server.emit('logs', `Total Agentes ${agentes.length}`);
 
         for (const agente of agentes) {
             i++;
             console.log(i, agente.documento)
+            this.ws.server.emit('logs', `(${i}) Agente ${agente.documento}`);
+
             for (const device of devices) {
 
                 const deviceClient = new HikVisionDevice(device);
                 if (!device.tags.includes('entrada') && !device.tags.includes('salida')) {
                     continue;
                 }
-                const events = await deviceClient.getEvents(
-                    desde,
-                    hasta,
-                    String(agente.id)
-                );
 
+                try {
+                    const events = await deviceClient.getEvents(
+                        desde,
+                        hasta,
+                        String(agente.id)
+                    );
 
-
-                for (const event of events) {
-
-                    const entradaTag = device.tags.includes('entrada');
-                    const salidaTag = device.tags.includes('salida');
-
-                    let esEntrada = entradaTag;
-
-                    if (entradaTag && salidaTag) {
-                        if (event.attendanceStatus === 'checkIn' || event.attendanceStatus === 'checkOut') {
-                            esEntrada = event.attendanceStatus === 'checkIn';
-                        } else {
-                            // this.logger.error(`device ${device.id} tiene entra y salida como tag`);
-                            // return;
-                        }
+                    if (device.host === '192.160.150.31') {
+                        console.log('hola')
                     }
 
 
-                    const fecha = sub(new Date(event.datetime), { hours: 3 });
-                    const identificador = agente.identificadores.find((ident) => ident.startsWith('rrhh-legacy'));
-                    const id = parseInt(identificador.substring(12), 10);
-
-                    const dto2 = {
-                        syncTries: 0,
-                        idFichada: 0,
-                        idAgente: id,
-                        fecha,
-                        esEntrada: esEntrada,
-                        reloj: 32,
-                        syncError: null
-                    };
 
 
-                    console.log(dto2.idAgente, dto2.fecha, dto2.esEntrada);
+                    for (const event of events) {
 
-                    const r = await sqlExport.insert('Personal_FichadasSync', dto2);
-                    // console.log(r);
+                        const entradaTag = device.tags.includes('entrada');
+                        const salidaTag = device.tags.includes('salida');
+
+                        let esEntrada = entradaTag;
+
+                        if (entradaTag && salidaTag) {
+                            if (event.attendanceStatus === 'checkIn' || event.attendanceStatus === 'checkOut') {
+                                esEntrada = event.attendanceStatus === 'checkIn';
+                            } else {
+                                // this.logger.error(`device ${device.id} tiene entra y salida como tag`);
+                                // return;
+                            }
+                        }
+
+
+                        const fecha = sub(new Date(event.datetime), { hours: 3 });
+                        const identificador = agente.identificadores.find((ident) => ident.startsWith('rrhh-legacy'));
+                        const id = parseInt(identificador.substring(12), 10);
+
+                        const dto2 = {
+                            syncTries: 0,
+                            idFichada: 0,
+                            idAgente: id,
+                            fecha,
+                            esEntrada: esEntrada,
+                            reloj: 32,
+                            syncError: null
+                        };
+
+
+                        console.log(dto2.idAgente, dto2.fecha, dto2.esEntrada);
+
+                        const r = await sqlExport.insert('Personal_FichadasSync', dto2);
+
+                    }
+
+                } catch (e) {
+                    this.ws.server.emit('logs', `Error con reloj ${device.host}`);
+                    console.error(`Error con reloj ${device.host}`);
+                    return;
 
                 }
 

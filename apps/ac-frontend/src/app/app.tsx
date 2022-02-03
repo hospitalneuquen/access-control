@@ -12,9 +12,12 @@ import { AgentesSyncPage } from '../agentes/agentes-sync.page';
 import {io } from "socket.io-client";
 import { EuiGlobalToastList } from "@elastic/eui";
 import { environment } from "../environments/environment";
+import { LogsPage } from "../logs/logs.page";
+import { SocketServerContext } from "../ws.context";
 
 export const App = () => {
     const [toasts, setToast] = useState([]);
+    const [socket, setSocket] = useState(null);
     
 
     useEffect(() => {
@@ -26,7 +29,9 @@ export const App = () => {
         socket.on('agente-sync', (args) => {
             const t = createToast(args);
             setToast(prev => [...prev, t]);
-        })
+        });
+
+        setSocket(socket);
 
       }, []);
 
@@ -51,42 +56,51 @@ export const App = () => {
       };
 
     return (
-        <div>
-            <EuiGlobalToastList
-      toasts={toasts}
-      dismissToast={removeToast}
-      toastLifeTimeMs={6000}
-    />
-            <NavBar />
+        <SocketServerContext.Provider value={socket}>
 
-            <Switch>
-                <Route
-                    path="/"
-                    exact
-                    render={HomePage}
-                />
-                <Route
-                    path="/devices"
-                    render={() => <DevicesPage />}
-                />
-                <Route
-                    path="/agentes/create"
-                    render={() => <AgentesCreatePage></AgentesCreatePage>}
-                />
-                <Route
-                    path="/agentes/:id/sync"
-                    render={() => <AgentesSyncPage></AgentesSyncPage>}
-                />
-                <Route
-                    path="/agentes/:id"
-                    render={() => <AgentesUpdatePage></AgentesUpdatePage>}
-                />
-                <Route
-                    path="/agentes"
-                    render={() => <AgentesListPage />}
-                />
-            </Switch>
-        </div>
+            <div>
+                <EuiGlobalToastList
+        toasts={toasts}
+        dismissToast={removeToast}
+        toastLifeTimeMs={6000}
+        />
+                <NavBar />
+
+                <Switch>
+                    <Route
+                        path="/"
+                        exact
+                        render={HomePage}
+                    />
+                    <Route
+                        path="/devices"
+                        render={() => <DevicesPage />}
+                    />
+                    <Route
+                        path="/agentes/create"
+                        render={() => <AgentesCreatePage></AgentesCreatePage>}
+                    />
+                    <Route
+                        path="/agentes/:id/sync"
+                        render={() => <AgentesSyncPage></AgentesSyncPage>}
+                    />
+                    <Route
+                        path="/agentes/:id"
+                        render={() => <AgentesUpdatePage></AgentesUpdatePage>}
+                    />
+                    <Route
+                        path="/agentes"
+                        render={() => <AgentesListPage />}
+                    />
+
+                    <Route
+                        path="/logs"
+                        render={() => <LogsPage />}
+                    />
+                </Switch>
+            </div>
+        </SocketServerContext.Provider>
+
     );
 };
 

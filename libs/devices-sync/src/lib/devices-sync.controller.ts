@@ -86,35 +86,38 @@ export class DeviceSyncController {
 
 
 
-    @Get('/magia')
-    async magia(@Res() res) {
-        const devices = await this.devicesService.getAll({}, { host: 1, port: 1, user: 1, password: 1, tags: 1 });
+    @Post('/magia')
+    async magia(@Res() res, @Body() body: any) {
+        const raw$: any = {};
+        if (body.documentos) {
+            raw$.documentos = body.documentos;
+        }
+        const desde = new Date(body.desde);
+        const hasta = new Date(body.hasta);
+
+        const devices = await this.devicesService.getAll({ active: true }, { host: 1, port: 1, user: 1, password: 1, tags: 1 });
 
         const agentes = await this.agenteService.getAll({
-            raw: {
-                documento: {
-                    $in: [
-                        // "37859007",
-                        // "42449399",
-                        // "33952286",
-                        // "30500111",
-                        "32428143",
-                    ]
-                }
-            }
+            raw: raw$
         });
 
         const sqlExport = this.getSQLServer();
-
+        let i = 0;
 
         for (const agente of agentes) {
+            i++;
+            console.log(i, agente.documento)
             for (const device of devices) {
+
                 const deviceClient = new HikVisionDevice(device);
                 if (!device.tags.includes('entrada') && !device.tags.includes('salida')) {
                     continue;
                 }
-
-                const events = await deviceClient.getEvents(new Date('2021-07-01'), new Date('2021-07-30'), String(agente.id));
+                const events = await deviceClient.getEvents(
+                    desde,
+                    hasta,
+                    String(agente.id)
+                );
 
 
 
@@ -150,7 +153,7 @@ export class DeviceSyncController {
                     };
 
 
-                    console.log(dto2)
+                    console.log(dto2.idAgente, dto2.fecha, dto2.esEntrada);
 
                     await sqlExport.insert('Personal_FichadasSync', dto2);
 

@@ -109,6 +109,9 @@ export class DeviceSyncController {
 
         for (const agente of agentes) {
             i++;
+            if (body.skip && i < body.skip) {
+                continue;
+            }
             console.log(i, agente.documento)
             this.ws.server.emit('logs', `(${i}) Agente ${agente.documento}`);
 
@@ -125,13 +128,6 @@ export class DeviceSyncController {
                         hasta,
                         String(agente.id)
                     );
-
-                    if (device.host === '192.160.150.31') {
-                        console.log('hola')
-                    }
-
-
-
 
                     for (const event of events) {
 

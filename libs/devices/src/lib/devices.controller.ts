@@ -119,5 +119,20 @@ export class DeviceController {
         return res.status(HttpStatus.OK).json(device);
     }
 
+    @Post('/:id/reboot')
+    async reboot(@Res() res, @Param('id') deviceID: string) {
+        const device = await this.devicesService.findById(deviceID);
+        if (!device) {
+            throw new NotFoundException('device not found');
+        }
+        const deviceClient = new HikVisionDevice(device);
+
+        console.log(await deviceClient.reboot());
+
+        return res.status(HttpStatus.OK).json(device);
+
+
+    }
+
 
 }

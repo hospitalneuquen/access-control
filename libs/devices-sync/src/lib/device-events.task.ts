@@ -1,4 +1,5 @@
 import { DevicesService } from '@access-control/devices';
+import { HikVisionDevice } from '@access-control/devices-adapter/hikvision';
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
@@ -14,7 +15,6 @@ export class DeviceEventsTasks {
 
     @Cron('15 * * * * *')
     async handleCron() {
-        return;
         this.logger.debug('Running device events sync task');
         const now = new Date();
 
@@ -35,6 +35,21 @@ export class DeviceEventsTasks {
                 };
                 await this.devicesQueue.add(DEVICE_EVENTS_SYNC_JOB, jobData);
             }
+        }
+    }
+
+
+    @Cron('* 3 * * *')
+    async rebootDevices() {
+        this.logger.debug('Running device events sync task');
+        const now = new Date();
+
+        const devicesMatched = await this.devicesService.getAll({ active: true }, {});
+        this.logger.debug(`Found ${devicesMatched.length} devices to sync`);
+
+        for (const device of devicesMatched) {
+            const deviceClient = new HikVisionDevice(device);
+            await deviceClient.reboot();
         }
     }
 }

@@ -59,6 +59,10 @@ export class HikVisionDevice {
             .then((respuesta) => JSON.parse(respuesta));
     }
 
+    public async reboot() {
+        return await this.put('/ISAPI/System/reboot'); 
+    }
+
     public async count(): Promise<number> {
         const response = await this.get('/ISAPI/AccessControl/UserInfo/Count'); 
         return response?.UserInfoCount?.userNumber;

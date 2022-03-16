@@ -15,6 +15,19 @@ services:
             - '6379:6379'
         environment:
             - ALLOW_EMPTY_PASSWORD=yes
+
+    mssql:
+        image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+        container_name: access_control_mssql
+        ports:
+            - '1433:1433'
+        environment:
+          - ACCEPT_EULA=Y
+          - SA_PASSWORD=yourStrong(!)Password
+          - MSSQL_PID=Express
+        volumes:
+          - ./docker/init_sql:/opt/init_sql
+        command: sh -c 'cd /opt/init_sql; ./entrypoint.sh & /opt/mssql/bin/sqlservr;'
 volumes:
     datastore:
         driver: local

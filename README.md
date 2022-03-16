@@ -89,15 +89,16 @@ Teams using Nx gain the advantage of building full-stack applications with their
 
 Visit [Nx Cloud](https://nx.app/) to learn more.
 
-# SQL Stuff
+# Start development mode
+
+Create the `.env` file 
 
 ```
-docker run --name sqlserver --rm  -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -e 'MSSQL_PID=Express' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-latest-ubuntu
-
-docker exec -it sqlserver  /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'yourStrong(!)Password'
-
-create database test
-use test
-CREATE TABLE [Personal_Fichadas]([id] [int] IDENTITY(1,1) NOT NULL, [idAgente] [int] NOT NULL,[fecha] [datetime] NOT NULL,[esEntrada] [bit] NULL,[reloj] [int] NOT NULL,[format] [int],	[data1] [int],	[data2] [int] )
-
+SQLSERVER_HOST=localhost
+SQLSERVER_USER=sa
+SQLSERVER_PASSWORD=yourStrong(!)Password
+SQLSERVER_DATABASE=test
+MONGODB_URI=mongodb://localhost:27017/personal
 ```
+
+start docker-compose `docker-compose up -d` and then start the app `npm start`

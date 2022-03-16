@@ -6,6 +6,7 @@ export const NavBar = () => {
     const location = useLocation();
     const isDevicesActive = location.pathname.startsWith('/devices');
     const isAgentesActive = location.pathname.startsWith('/agentes');
+    const isSyncActive = location.pathname.startsWith('/sync');
     return (
         <EuiHeader >
             <EuiHeaderSectionItem border="right">
@@ -19,6 +20,9 @@ export const NavBar = () => {
                     </EuiHeaderLink>
                     <EuiHeaderLink href="/agentes" isActive={isAgentesActive}>
                         Agentes
+                    </EuiHeaderLink>
+                    <EuiHeaderLink href="/sync" isActive={isSyncActive}>
+                        Sync
                     </EuiHeaderLink>
                 </EuiHeaderLinks>
             </EuiHeaderSectionItem>

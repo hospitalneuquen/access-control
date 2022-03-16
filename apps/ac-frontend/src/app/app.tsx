@@ -9,6 +9,7 @@ import { DevicesPage } from '../devices/devices.page';
 import { AgentesListPage } from '../agentes/agentes-list.page';
 import { AgentesCreatePage, AgentesUpdatePage } from '../agentes/agentes-create.page';
 import { AgentesSyncPage } from '../agentes/agentes-sync.page';
+import { SyncPage } from '../sync/sync.page';
 import {io } from "socket.io-client";
 import { EuiGlobalToastList } from "@elastic/eui";
 import { environment } from "../environments/environment";
@@ -91,6 +92,10 @@ export const App = () => {
                     <Route
                         path="/agentes"
                         render={() => <AgentesListPage />}
+                    />
+                    <Route
+                        path="/sync"
+                        render={() => <SyncPage />}
                     />
 
                     <Route

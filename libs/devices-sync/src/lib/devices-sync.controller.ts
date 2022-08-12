@@ -92,7 +92,7 @@ export class DeviceSyncController {
     async magia(@Res() res, @Body() body: any) {
         const raw$: any = {};
         if (body.documentos) {
-            raw$.documentos = body.documentos;
+            raw$.documento =  { $in: body.documentos };
         }
         const desde = new Date(body.desde);
         const hasta = new Date(body.hasta);

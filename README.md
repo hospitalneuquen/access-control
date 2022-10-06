@@ -2,7 +2,7 @@
 
 ## Documentation
 
-Go to [Wiki](./wiki)
+Go to [Wiki](https://github.com/hospitalneuquen/access-control/wiki)
 
 ## Nx
 

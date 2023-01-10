@@ -13,7 +13,7 @@ export class DeviceEventsTasks {
 
     constructor(private devicesService: DevicesService, @InjectQueue(DEVICE_SYNC_QUEUE) private devicesQueue: Queue) { }
 
-    @Cron('15 * * * *')
+    @Cron('0 10 * * * *')
     async handleCron() {
         this.logger.debug('Running device events sync task');
         const now = new Date();
@@ -39,7 +39,7 @@ export class DeviceEventsTasks {
     }
 
 
-    @Cron('0 3 * * *')
+    @Cron('0 0 3 * * *')
     async rebootDevices() {
         this.logger.debug('Running device events sync task');
         const now = new Date();

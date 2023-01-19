@@ -168,9 +168,8 @@ export class DeviceSyncController {
                     }
 
                 } catch (e) {
-                    this.ws.server.emit('logs', `Error con reloj ${device.host}`);
-                    console.error(`Error con reloj ${device.host}`);
-                    return;
+                    this.ws.server.emit('logs', `Error con reloj ${device.host} con el agente ${agente.documento}`);
+                    console.error(`Error con reloj ${device.host} con el agente ${agente.documento}`);
 
                 }
 

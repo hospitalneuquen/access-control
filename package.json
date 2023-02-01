@@ -47,7 +47,7 @@
     "document-register-element": "1.13.1",
     "moment": "^2.27.0",
     "mongo-gridfs": "^1.1.0",
-    "mongoose": "^5.9.18",
+    "mongoose": "^5.13.15",
     "mssql": "^6.2.0",
     "multer-gridfs-storage": "^4.2.0",
     "node-fetch": "^2.6.0",
